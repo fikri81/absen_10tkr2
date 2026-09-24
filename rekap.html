@@ -2,31 +2,56 @@
 <html>
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>REKAP RACING 10 TKR 2 - FIX</title>
+<title>REKAP RACING PS5 - 10 TKR 2</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
-body{background:#111;color:#fff;font-family:system-ui;text-align:center;padding:12px}
-.card{background:#222;border-radius:12px;padding:12px;margin:10px auto;max-width:900px}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th,td{border:1px solid #333;padding:6px}
-th{background:#FFD600;color:#000}
-.btn{background:#FFD600;color:#000;border:0;padding:8px 14px;border-radius:8px;font-weight:800;cursor:pointer}
+:root{--gold:#E7C65A;--gold-glow:#FFD700;--bg:#0E0E10;--card:#18181C;--card2:#1F1F24}
+*{box-sizing:border-box}
+body{background:radial-gradient(800px at 50% -10%,#222 0%,var(--bg) 60%);color:#EAEAEA;font-family:'Inter',system-ui;margin:0;padding:16px;min-height:100vh}
+h2{font-family:'Orbitron';letter-spacing:2px;color:var(--gold);text-shadow:0 0 12px rgba(231,198,90,.4);margin:8px 0}
+.ps-bar{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:14px auto;max-width:900px}
+.ps-select{appearance:none;background:var(--card);border:1px solid rgba(231,198,90,.35);color:#fff;padding:10px 14px;border-radius:10px;outline:none;min-width:130px;transition:.2s;font-weight:600}
+.ps-select:focus{border-color:var(--gold);box-shadow:0 0 0 2px rgba(231,198,90,.25),0 0 18px rgba(255,215,0,.35)}
+.ps-btn{font-family:'Orbitron';background:linear-gradient(180deg,#2A2A2E,#1A1A1E);border:1px solid var(--gold);color:var(--gold);padding:10px 18px;border-radius:12px;font-weight:700;letter-spacing:.8px;cursor:pointer;position:relative;overflow:hidden;transition:.25s}
+.ps-btn:hover{transform:translateY(-1px);box-shadow:0 0 0 2px rgba(231,198,90,.2),0 0 22px rgba(255,215,0,.5);background:#242428}
+.ps-btn:active{transform:scale(.97);box-shadow:0 0 28px rgba(255,215,0,.9) inset}
+.ps-btn::after{content:'';position:absolute;inset:-50%;background:radial-gradient(300px at var(--x,50%) var(--y,50%),rgba(255,215,0,.25),transparent 60%);opacity:0;transition:.3s}
+.ps-btn:hover::after{opacity:1}
+.card{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid rgba(231,198,90,.22);border-radius:18px;padding:14px;margin:14px auto;max-width:900px;box-shadow:0 8px 24px rgba(0,0,0,.5);transition:.25s;position:relative}
+.card:hover{border-color:var(--gold);box-shadow:0 0 0 1px rgba(231,198,90,.3),0 0 28px rgba(255,215,0,.18),0 10px 30px rgba(0,0,0,.6)}
+.card::before{content:'';position:absolute;top:0;left:14px;right:14px;height:1px;background:linear-gradient(90deg,transparent,rgba(231,198,90,.4),transparent)}
+#debug{color:var(--gold);font-size:11px;opacity:.8;letter-spacing:.5px}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px;overflow:hidden;border-radius:12px;border:1px solid rgba(231,198,90,.2)}
+th{background:linear-gradient(180deg,#2E2E32,#232328);color:var(--gold);padding:10px 6px;font-family:'Orbitron';font-size:11px;letter-spacing:.6px;border-bottom:1px solid rgba(231,198,90,.3)}
+td{border-bottom:1px solid rgba(255,255,255,.06);padding:9px 6px;background:rgba(0,0,0,.15)}
+tr:last-child td{border-bottom:0}
+tr{transition:.18s}
+tr:hover td{background:rgba(231,198,90,.08);box-shadow:inset 0 0 0 1px rgba(231,198,90,.18)}
+td:first-child{color:#EAD98A;cursor:pointer;font-weight:600;text-align:left}
+td:first-child:hover{color:var(--gold-glow);text-shadow:0 0 10px rgba(255,215,0,.7)}
+.pulse{animation:psPulse.6s}
+@keyframes psPulse{0%{box-shadow:0 0 0 0 rgba(255,215,0,.7)}70%{box-shadow:0 0 0 12px rgba(255,215,0,0)}100%{box-shadow:0 0 0 0 rgba(255,215,0,0)}}
+canvas{filter:drop-shadow(0 0 6px rgba(0,0,0,.5))}
+small{opacity:.55}
+a.back{color:var(--gold);text-decoration:none;border:1px solid rgba(231,198,90,.25);padding:8px 12px;border-radius:10px;transition:.2s}
+a.back:hover{box-shadow:0 0 14px rgba(255,215,0,.35)}
 </style>
 </head>
 <body>
-<h2 style="color:#FFD600">🏁 REKAP BULANAN 10 TKR 2 - FIXED</h2>
-<select id="bln"><option value="1">Bulan 1</option><option value="2">Bulan 2</option><option value="3">Bulan 3</option><option value="4">Bulan 4</option><option value="5">Bulan 5</option><option value="6">Bulan 6</option><option value="7">Bulan 7</option><option value="8">Bulan 8</option><option value="9" selected>Bulan 9</option><option value="10">Bulan 10</option><option value="11">Bulan 11</option><option value="12">Bulan 12</option></select>
-<select id="thn"><option>2025</option><option selected>2026</option></select>
-<button class="btn" onclick="load()">LOAD PIT DATA</button>
-<a href="/" style="color:#FFD600;margin-left:10px">← Kembali Absen</a>
-<div id="debug" style="color:#0f0;margin:8px;font-size:12px"></div>
-
-<div class="card"><h4>TOTAL KELAS BULAN INI</h4><canvas id="c1"></canvas><div id="totalTxt"></div></div>
-<div class="card"><h4 id="gJudul">GRAFIK PER SISWA - Klik nama di tabel</h4><canvas id="c2"></canvas></div>
-<div class="card"><table id="tbl"><thead><tr><th>NAMA PEMBALAP</th><th>H</th><th>T</th><th>S</th><th>I</th><th>D</th><th>A</th><th>%</th></tr></thead><tbody></tbody></table>
-<small>H=Hadir 06:30-07:30 | T=Telat 07:31-16:00 | S=Sakit | I=Izin | D=Dispensasi | A=Alpa | % = (H+T)/hari masuk</small>
+<h2>🏁 REKAP • 10 TKR 2</h2>
+<div class="ps-bar">
+<select id="bln" class="ps-select"><option value="1">JANUARI</option><option value="2">FEBRUARI</option><option value="3">MARET</option><option value="4">APRIL</option><option value="5">MEI</option><option value="6">JUNI</option><option value="7">JULI</option><option value="8">AGUSTUS</option><option value="9" selected>SEPTEMBER</option><option value="10">OKTOBER</option><option value="11">NOVEMBER</option><option value="12">DESEMBER</option></select>
+<select id="thn" class="ps-select"><option>2025</option><option selected>2026</option></select>
+<button class="ps-btn" id="loadBtn" onclick="load()">◉ LOAD PIT DATA</button>
+<a class="back" href="/">← PIT STOP</a>
 </div>
+<div id="debug" style="text-align:center;margin:6px"></div>
+
+<div class="card"><h4 style="font-family:Orbitron;color:var(--gold);margin:6px 0;letter-spacing:1px">TOTAL KELAS BULAN INI</h4><canvas id="c1"></canvas><div id="totalTxt" style="margin-top:8px;font-size:12px;opacity:.8"></div></div>
+<div class="card"><h4 id="gJudul" style="font-family:Orbitron;color:#fff;margin:6px 0;letter-spacing:.8px">GRAFIK PER SISWA - Klik nama di tabel</h4><canvas id="c2"></canvas></div>
+<div class="card"><table id="tbl"><thead><tr><th>NAMA PEMBALAP</th><th>H</th><th>T</th><th>S</th><th>I</th><th>D</th><th>A</th><th>%</th></tr></thead><tbody></tbody></table><small>H=Hadir | T=Telat | S=Sakit | I=Izin | D=Dispensasi | A=Alpa | % = (H+T)/20 hari</small></div>
 
 <script>
 const SUPA_URL="https://xozwsdjlifmoywmxdoaj.supabase.co";
@@ -34,77 +59,60 @@ const SUPA_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 const supa=supabase.createClient(SUPA_URL,SUPA_KEY);
 let chart1,chart2;
 
+// efek cahaya ikut mouse di tombol PS
+document.addEventListener('mousemove',e=>{
+  const b=document.getElementById('loadBtn');
+  if(!b) return;
+  const r=b.getBoundingClientRect();
+  b.style.setProperty('--x', (e.clientX-r.left)+'px');
+  b.style.setProperty('--y', (e.clientY-r.top)+'px');
+});
+
 async function load(){
  const bln=parseInt(document.getElementById('bln').value);
  const thn=parseInt(document.getElementById('thn').value);
  const debug=document.getElementById('debug');
- debug.innerText="Loading...";
+ const btn=document.getElementById('loadBtn');
+ btn.classList.add('pulse'); setTimeout(()=>btn.classList.remove('pulse'),700);
+ debug.innerText="▸ Loading pit telemetry...";
  try{
-  let {data:siswa,error:e1}=await supa.from('siswa').select('*').order('nama',{ascending:true});
+  let {data:siswa, error:e1}=await supa.from('siswa').select('*').order('nama',{ascending:true});
   if(e1) throw e1;
-
-  // FIX: Ambil SEMUA absensi, tidak pakai created_at
-  let {data:absAll,error:e2}=await supa.from('absensi').select('*').limit(1000);
+  let {data:absAll, error:e2}=await supa.from('absensi').select('*').limit(1000);
   if(e2) throw e2;
-
-  // Filter bulan di JS - coba deteksi kolom tanggal/waktu/tgl/jam
-  let abs = absAll.filter(a=>{
-    let t = a.tanggal || a.waktu || a.tgl || a.created_at || "";
-    if(!t) return true; // kalau gak ada tanggal, tampilkan semua
-    let d = new Date(t);
-    if(isNaN(d)) return true; // format bukan ISO, tampilkan semua
+  let abs=absAll.filter(a=>{
+    let t=a.tanggal||a.waktu||a.tgl||"";
+    if(!t) return true;
+    let d=new Date(t);
+    if(isNaN(d)) return true;
     return (d.getMonth()+1)==bln && d.getFullYear()==thn;
   });
-
-  // Jika filter menghasilkan 0 tapi data asli ada, tampilkan semua (biar tidak zonk)
-  if(abs.length==0 && absAll.length>0) abs = absAll;
-
-  debug.innerText=`Siswa: ${siswa.length} | Absensi Total: ${absAll.length} | Filter Bulan ${bln}/${thn}: ${abs.length}`;
-
+  if(abs.length==0 && absAll.length>0) abs=absAll;
+  debug.innerText=`● ${siswa.length} drivers • ${abs.length} laps this month • READY`;
   let map={};
   siswa.forEach(s=>{map[s.id]={nama:s.nama,H:0,T:0,S:0,I:0,D:0,A:0}});
-
-  abs.forEach(a=>{
-    let m=map[a.siswa_id];
-    if(!m) return;
-    let st=(a.status||'H').toUpperCase();
-    if(['H','T','S','I','D','A'].includes(st)) m[st]++; else m.H++;
-  });
-
-  let tbody=document.querySelector('#tbl tbody');
-  tbody.innerHTML="";
+  abs.forEach(a=>{let m=map[a.siswa_id]; if(!m) return; let st=(a.status||'H').toUpperCase(); if(['H','T','S','I','D','A'].includes(st)) m[st]++; else m.H++;});
+  let tbody=document.querySelector('#tbl tbody'); tbody.innerHTML="";
   let tot={H:0,T:0,S:0,I:0,D:0,A:0};
   siswa.forEach(s=>{
-    let r=map[s.id];
-    let hadir = r.H + r.T;
-    let pct = hadir>0? Math.round((hadir / (hadir+r.S+r.I+r.D+r.A || 1))*100) : 0;
-    if(abs.length>0) pct = Math.round(((r.H+r.T)/abs.length*36)*100); // simple
-    // hitung % dari 20 hari efektif biar masuk akal
-    pct = Math.round(((r.H+r.T)/20)*100);
-    tot.H+=r.H; tot.T+=r.T; tot.S+=r.S; tot.I+=r.I; tot.D+=r.D; tot.A+=r.A;
+    let r=map[s.id]; tot.H+=r.H; tot.T+=r.T; tot.S+=r.S; tot.I+=r.I; tot.D+=r.D; tot.A+=r.A;
+    let pct=Math.round(((r.H+r.T)/20)*100);
     let tr=document.createElement('tr');
-    tr.innerHTML=`<td style="text-align:left;cursor:pointer;color:#FFD600" onclick="showGrafik('${s.id}','${r.nama}')">${r.nama}</td><td>${r.H}</td><td>${r.T}</td><td>${r.S}</td><td>${r.I}</td><td>${r.D}</td><td>${r.A}</td><td>${pct}%</td>`;
+    tr.innerHTML=`<td onclick="showGrafik('${s.id}','${r.nama.replace(/'/g,"")}');this.parentElement.classList.add('pulse');setTimeout(()=>this.parentElement.classList.remove('pulse'),600)">${r.nama}</td><td>${r.H}</td><td>${r.T}</td><td>${r.S}</td><td>${r.I}</td><td>${r.D}</td><td>${r.A}</td><td style="color:var(--gold)">${pct}%</td>`;
     tbody.appendChild(tr);
   });
-
-  document.getElementById('totalTxt').innerText=`H:${tot.H} T:${tot.T} S:${tot.S} I:${tot.I} D:${tot.D} A:${tot.A} | Total Record Ditampilkan: ${abs.length}`;
-
+  document.getElementById('totalTxt').innerText=`H:${tot.H} T:${tot.T} S:${tot.S} I:${tot.I} D:${tot.D} A:${tot.A} | Records: ${abs.length}`;
   if(chart1) chart1.destroy();
-  chart1=new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:['H','T','S','I','D','A'],datasets:[{data:[tot.H,tot.T,tot.S,tot.I,tot.D,tot.A],backgroundColor:['#0f0','#FFD600','#0ff','#fa0','#a0f','#f00']}]},options:{plugins:{legend:{labels:{color:'#fff'}}}}});
-
+  Chart.defaults.color='#aaa';
+  chart1=new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:['H','T','S','I','D','A'],datasets:[{data:[tot.H,tot.T,tot.S,tot.I,tot.D,tot.A],backgroundColor:['#E7C65A','#8A7A3A','#3A3A3E','#555','#777','#222'],borderColor:'#18181C',borderWidth:2}]},options:{plugins:{legend:{position:'bottom',labels:{color:'#ccc',boxWidth:12}}},cutout:'58%'}});
   window._map=map;
-  debug.innerText+= " - DONE! Klik nama untuk grafik";
- }catch(err){
-  debug.innerText="ERROR: "+err.message;
-  alert(err.message);
- }
+ }catch(err){debug.innerText="ERROR: "+err.message; alert(err.message);}
 }
-
 function showGrafik(id,nama){
- let r=window._map[id];
- document.getElementById('gJudul').innerText="GRAFIK: "+nama;
+ let r=window._map[id]; document.getElementById('gJudul').innerText="◉ TELEMETRY: "+nama.toUpperCase();
  if(chart2) chart2.destroy();
- chart2=new Chart(document.getElementById('c2'),{type:'bar',data:{labels:['H','T','S','I','D','A'],datasets:[{label:nama,data:[r.H,r.T,r.S,r.I,r.D,r.A],backgroundColor:'#FFD600'}]},options:{plugins:{legend:{labels:{color:'#fff'}}},scales:{x:{ticks:{color:'#fff'}},y:{ticks:{color:'#fff'}}}}});
+ chart2=new Chart(document.getElementById('c2'),{type:'bar',data:{labels:['H','T','S','I','D','A'],datasets:[{label:nama,data:[r.H,r.T,r.S,r.I,r.D,r.A],backgroundColor:['#E7C65A','#C9B06A','#3A3A40','#5A5A60','#7A7A80','#1E1E22'],borderColor:'#E7C65A',borderWidth:1,borderRadius:6}]},options:{plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(255,255,255,.06)'},ticks:{color:'#888'}},x:{grid:{display:false},ticks:{color:'#aaa'}}}}});
+ const card=document.getElementById('c2').closest('.card'); card.classList.add('pulse'); setTimeout(()=>card.classList.remove('pulse'),700);
 }
 load();
 </script>
