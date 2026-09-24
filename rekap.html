@@ -1,120 +1,64 @@
 <!DOCTYPE html>
-<html>
-<head>
+<html><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>REKAP RACING PS5 - 10 TKR 2</title>
+<title>REKAP PS5 10 TKR 2</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
-:root{--gold:#E7C65A;--gold-glow:#FFD700;--bg:#0E0E10;--card:#18181C;--card2:#1F1F24}
-*{box-sizing:border-box}
-body{background:radial-gradient(800px at 50% -10%,#222 0%,var(--bg) 60%);color:#EAEAEA;font-family:'Inter',system-ui;margin:0;padding:16px;min-height:100vh}
-h2{font-family:'Orbitron';letter-spacing:2px;color:var(--gold);text-shadow:0 0 12px rgba(231,198,90,.4);margin:8px 0}
-.ps-bar{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:14px auto;max-width:900px}
-.ps-select{appearance:none;background:var(--card);border:1px solid rgba(231,198,90,.35);color:#fff;padding:10px 14px;border-radius:10px;outline:none;min-width:130px;transition:.2s;font-weight:600}
-.ps-select:focus{border-color:var(--gold);box-shadow:0 0 0 2px rgba(231,198,90,.25),0 0 18px rgba(255,215,0,.35)}
-.ps-btn{font-family:'Orbitron';background:linear-gradient(180deg,#2A2A2E,#1A1A1E);border:1px solid var(--gold);color:var(--gold);padding:10px 18px;border-radius:12px;font-weight:700;letter-spacing:.8px;cursor:pointer;position:relative;overflow:hidden;transition:.25s}
-.ps-btn:hover{transform:translateY(-1px);box-shadow:0 0 0 2px rgba(231,198,90,.2),0 0 22px rgba(255,215,0,.5);background:#242428}
-.ps-btn:active{transform:scale(.97);box-shadow:0 0 28px rgba(255,215,0,.9) inset}
-.ps-btn::after{content:'';position:absolute;inset:-50%;background:radial-gradient(300px at var(--x,50%) var(--y,50%),rgba(255,215,0,.25),transparent 60%);opacity:0;transition:.3s}
-.ps-btn:hover::after{opacity:1}
-.card{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid rgba(231,198,90,.22);border-radius:18px;padding:14px;margin:14px auto;max-width:900px;box-shadow:0 8px 24px rgba(0,0,0,.5);transition:.25s;position:relative}
-.card:hover{border-color:var(--gold);box-shadow:0 0 0 1px rgba(231,198,90,.3),0 0 28px rgba(255,215,0,.18),0 10px 30px rgba(0,0,0,.6)}
-.card::before{content:'';position:absolute;top:0;left:14px;right:14px;height:1px;background:linear-gradient(90deg,transparent,rgba(231,198,90,.4),transparent)}
-#debug{color:var(--gold);font-size:11px;opacity:.8;letter-spacing:.5px}
-table{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px;overflow:hidden;border-radius:12px;border:1px solid rgba(231,198,90,.2)}
-th{background:linear-gradient(180deg,#2E2E32,#232328);color:var(--gold);padding:10px 6px;font-family:'Orbitron';font-size:11px;letter-spacing:.6px;border-bottom:1px solid rgba(231,198,90,.3)}
-td{border-bottom:1px solid rgba(255,255,255,.06);padding:9px 6px;background:rgba(0,0,0,.15)}
-tr:last-child td{border-bottom:0}
-tr{transition:.18s}
-tr:hover td{background:rgba(231,198,90,.08);box-shadow:inset 0 0 0 1px rgba(231,198,90,.18)}
-td:first-child{color:#EAD98A;cursor:pointer;font-weight:600;text-align:left}
-td:first-child:hover{color:var(--gold-glow);text-shadow:0 0 10px rgba(255,215,0,.7)}
-.pulse{animation:psPulse.6s}
-@keyframes psPulse{0%{box-shadow:0 0 0 0 rgba(255,215,0,.7)}70%{box-shadow:0 0 0 12px rgba(255,215,0,0)}100%{box-shadow:0 0 0 0 rgba(255,215,0,0)}}
-canvas{filter:drop-shadow(0 0 6px rgba(0,0,0,.5))}
-small{opacity:.55}
-a.back{color:var(--gold);text-decoration:none;border:1px solid rgba(231,198,90,.25);padding:8px 12px;border-radius:10px;transition:.2s}
-a.back:hover{box-shadow:0 0 14px rgba(255,215,0,.35)}
-</style>
-</head>
-<body>
-<h2>🏁 REKAP • 10 TKR 2</h2>
-<div class="ps-bar">
-<select id="bln" class="ps-select"><option value="1">JANUARI</option><option value="2">FEBRUARI</option><option value="3">MARET</option><option value="4">APRIL</option><option value="5">MEI</option><option value="6">JUNI</option><option value="7">JULI</option><option value="8">AGUSTUS</option><option value="9" selected>SEPTEMBER</option><option value="10">OKTOBER</option><option value="11">NOVEMBER</option><option value="12">DESEMBER</option></select>
-<select id="thn" class="ps-select"><option>2025</option><option selected>2026</option></select>
-<button class="ps-btn" id="loadBtn" onclick="load()">◉ LOAD PIT DATA</button>
-<a class="back" href="/">← PIT STOP</a>
+:root{--gold:#E7C65A;--bg:#0E0E10;--card:#18181C;--card2:#1F1F24}
+body{background:radial-gradient(900px at 50% -20%,#25252A 0%,var(--bg) 65%);color:#EAEAEA;font-family:'Inter',system-ui;margin:0;padding:16px}
+h2{font-family:'Orbitron';letter-spacing:2.5px;color:var(--gold);text-shadow:0 0 14px rgba(231,198,90,.35);text-align:center}
+.bar{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:14px auto;max-width:920px}
+.sel{appearance:none;background:var(--card);border:1px solid rgba(231,198,90,.3);color:#fff;padding:11px 14px;border-radius:12px;min-width:140px;font-weight:600;transition:.25s}
+.sel:focus{border-color:var(--gold);box-shadow:0 0 0 2px rgba(231,198,90,.2),0 0 20px rgba(255,215,0,.3)}
+.btn{font-family:'Orbitron';background:linear-gradient(180deg,#2A2A2E,#17171A);border:1px solid var(--gold);color:var(--gold);padding:11px 20px;border-radius:12px;font-weight:700;letter-spacing:.8px;cursor:pointer;transition:.25s;position:relative;overflow:hidden}
+.btn:hover{box-shadow:0 0 0 2px rgba(231,198,90,.2),0 0 26px rgba(255,215,0,.45);transform:translateY(-1px)}
+.btn:active{transform:scale(.96);box-shadow:0 0 30px rgba(255,215,0,.9) inset}
+.card{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid rgba(231,198,90,.18);border-radius:20px;padding:16px;margin:14px auto;max-width:920px;box-shadow:0 10px 30px rgba(0,0,0,.5);transition:.25s}
+.card:hover{border-color:var(--gold);box-shadow:0 0 0 1px rgba(231,198,90,.25),0 0 30px rgba(255,215,0,.15)}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px;border-radius:14px;overflow:hidden;border:1px solid rgba(231,198,90,.18)}
+th{background:#232328;color:var(--gold);padding:10px 6px;font-family:'Orbitron';font-size:10.5px;letter-spacing:.6px;border-bottom:1px solid rgba(231,198,90,.25)}
+td{border-bottom:1px solid rgba(255,255,255,.05);padding:9px 6px;background:rgba(0,0,0,.18)}
+tr:hover td{background:rgba(231,198,90,.07);box-shadow:inset 0 0 0 1px rgba(231,198,90,.15)}
+td:first-child{color:#EAD98A;font-weight:600;text-align:left;cursor:pointer}
+td:first-child:hover{color:#FFD700;text-shadow:0 0 12px rgba(255,215,0,.7)}
+#debug{color:var(--gold);text-align:center;font-size:11px;margin:8px}
+.pulse{animation:pulse.6s} @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,215,0,.7)}70%{box-shadow:0 0 0 14px rgba(255,215,0,0)}100%{box-shadow:0 0 0 0 rgba(255,215,0,0)}}
+</style></head><body>
+<h2>◉ REKAP • 10 TKR 2</h2>
+<div class="bar">
+<select id="bln" class="sel"><option value="1">JAN</option><option value="2">FEB</option><option value="3">MAR</option><option value="4">APR</option><option value="5">MEI</option><option value="6">JUN</option><option value="7">JUL</option><option value="8">AGS</option><option value="9" selected>SEP</option><option value="10">OKT</option><option value="11">NOV</option><option value="12">DES</option></select>
+<select id="thn" class="sel"><option>2025</option><option selected>2026</option></select>
+<button class="btn" id="loadBtn" onclick="load()">◉ LOAD</button>
+<a href="/" class="btn" style="text-decoration:none;padding:11px 14px;font-size:12px">← PIT</a>
 </div>
-<div id="debug" style="text-align:center;margin:6px"></div>
-
-<div class="card"><h4 style="font-family:Orbitron;color:var(--gold);margin:6px 0;letter-spacing:1px">TOTAL KELAS BULAN INI</h4><canvas id="c1"></canvas><div id="totalTxt" style="margin-top:8px;font-size:12px;opacity:.8"></div></div>
-<div class="card"><h4 id="gJudul" style="font-family:Orbitron;color:#fff;margin:6px 0;letter-spacing:.8px">GRAFIK PER SISWA - Klik nama di tabel</h4><canvas id="c2"></canvas></div>
-<div class="card"><table id="tbl"><thead><tr><th>NAMA PEMBALAP</th><th>H</th><th>T</th><th>S</th><th>I</th><th>D</th><th>A</th><th>%</th></tr></thead><tbody></tbody></table><small>H=Hadir | T=Telat | S=Sakit | I=Izin | D=Dispensasi | A=Alpa | % = (H+T)/20 hari</small></div>
-
+<div id="debug"></div>
+<div class="card"><h4 style="font-family:Orbitron;color:var(--gold);text-align:center;letter-spacing:1px;margin:6px 0">TOTAL KELAS BULAN INI</h4><canvas id="c1"></canvas><div id="totalTxt" style="text-align:center;margin-top:8px;font-size:12px;opacity:.75"></div></div>
+<div class="card"><h4 id="gJudul" style="font-family:Orbitron;text-align:center;margin:6px 0;letter-spacing:.8px">GRAFIK PER SISWA - Klik nama</h4><canvas id="c2"></canvas></div>
+<div class="card"><table id="tbl"><thead><tr><th>NAMA PEMBALAP</th><th>H</th><th>T</th><th>S</th><th>I</th><th>D</th><th>A</th><th>%</th></tr></thead><tbody></tbody></table></div>
 <script>
-const SUPA_URL="https://xozwsdjlifmoywmxdoaj.supabase.co";
-const SUPA_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhvendzZGpsaWZtb3l3bXhkb2FqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxOTg1ODEsImV4cCI6MjEwNTc3NDU4MX0.8dtF7YpVlWGZ3OErpqAkPsBpcBPa0xQBs4NuC9cIPlY";
-const supa=supabase.createClient(SUPA_URL,SUPA_KEY);
-let chart1,chart2;
-
-// efek cahaya ikut mouse di tombol PS
-document.addEventListener('mousemove',e=>{
-  const b=document.getElementById('loadBtn');
-  if(!b) return;
-  const r=b.getBoundingClientRect();
-  b.style.setProperty('--x', (e.clientX-r.left)+'px');
-  b.style.setProperty('--y', (e.clientY-r.top)+'px');
-});
-
+const SUPA_URL="https://xozwsdjlifmoywmxdoaj.supabase.co";const SUPA_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhvendzZGpsaWZtb3l3bXhkb2FqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxOTg1ODEsImV4cCI6MjEwNTc3NDU4MX0.8dtF7YpVlWGZ3OErpqAkPsBpcBPa0xQBs4NuC9cIPlY";
+const supa=supabase.createClient(SUPA_URL,SUPA_KEY);let chart1,chart2;
 async function load(){
- const bln=parseInt(document.getElementById('bln').value);
- const thn=parseInt(document.getElementById('thn').value);
- const debug=document.getElementById('debug');
- const btn=document.getElementById('loadBtn');
- btn.classList.add('pulse'); setTimeout(()=>btn.classList.remove('pulse'),700);
- debug.innerText="▸ Loading pit telemetry...";
+ const bln=parseInt(blnEl.value); const thn=parseInt(thnEl.value); const debug=document.getElementById('debug'); const btn=document.getElementById('loadBtn');
+ btn.classList.add('pulse'); setTimeout(()=>btn.classList.remove('pulse'),700); debug.innerText="▸ Syncing telemetry...";
  try{
-  let {data:siswa, error:e1}=await supa.from('siswa').select('*').order('nama',{ascending:true});
-  if(e1) throw e1;
-  let {data:absAll, error:e2}=await supa.from('absensi').select('*').limit(1000);
-  if(e2) throw e2;
-  let abs=absAll.filter(a=>{
-    let t=a.tanggal||a.waktu||a.tgl||"";
-    if(!t) return true;
-    let d=new Date(t);
-    if(isNaN(d)) return true;
-    return (d.getMonth()+1)==bln && d.getFullYear()==thn;
-  });
+  let {data:siswa}=await supa.from('siswa').select('*').order('nama');
+  let {data:absAll}=await supa.from('absensi').select('*').limit(1000);
+  let abs=absAll.filter(a=>{let t=a.tanggal||a.waktu||""; if(!t) return true; let d=new Date(t); if(isNaN(d)) return true; return (d.getMonth()+1)==bln && d.getFullYear()==thn;});
   if(abs.length==0 && absAll.length>0) abs=absAll;
-  debug.innerText=`● ${siswa.length} drivers • ${abs.length} laps this month • READY`;
-  let map={};
-  siswa.forEach(s=>{map[s.id]={nama:s.nama,H:0,T:0,S:0,I:0,D:0,A:0}});
-  abs.forEach(a=>{let m=map[a.siswa_id]; if(!m) return; let st=(a.status||'H').toUpperCase(); if(['H','T','S','I','D','A'].includes(st)) m[st]++; else m.H++;});
-  let tbody=document.querySelector('#tbl tbody'); tbody.innerHTML="";
-  let tot={H:0,T:0,S:0,I:0,D:0,A:0};
-  siswa.forEach(s=>{
-    let r=map[s.id]; tot.H+=r.H; tot.T+=r.T; tot.S+=r.S; tot.I+=r.I; tot.D+=r.D; tot.A+=r.A;
-    let pct=Math.round(((r.H+r.T)/20)*100);
-    let tr=document.createElement('tr');
-    tr.innerHTML=`<td onclick="showGrafik('${s.id}','${r.nama.replace(/'/g,"")}');this.parentElement.classList.add('pulse');setTimeout(()=>this.parentElement.classList.remove('pulse'),600)">${r.nama}</td><td>${r.H}</td><td>${r.T}</td><td>${r.S}</td><td>${r.I}</td><td>${r.D}</td><td>${r.A}</td><td style="color:var(--gold)">${pct}%</td>`;
-    tbody.appendChild(tr);
-  });
+  debug.innerText=`● ${siswa.length} drivers • ${abs.length} records • READY`;
+  let map={}; siswa.forEach(s=>{map[s.id]={nama:s.nama,H:0,T:0,S:0,I:0,D:0,A:0}}); abs.forEach(a=>{let m=map[a.siswa_id]; if(!m) return; let st=(a.status||'H').toUpperCase(); if(['H','T','S','I','D','A'].includes(st)) m[st]++;});
+  let tbody=document.querySelector('#tbl tbody'); tbody.innerHTML=""; let tot={H:0,T:0,S:0,I:0,D:0,A:0};
+  siswa.forEach(s=>{let r=map[s.id]; tot.H+=r.H; tot.T+=r.T; tot.S+=r.S; tot.I+=r.I; tot.D+=r.D; tot.A+=r.A; let pct=Math.round(((r.H+r.T)/20)*100); let tr=document.createElement('tr'); tr.innerHTML=`<td onclick="showGrafik('${s.id}','${r.nama.replace(/'/g,"")}')">${r.nama}</td><td>${r.H}</td><td>${r.T}</td><td>${r.S}</td><td>${r.I}</td><td>${r.D}</td><td>${r.A}</td><td style="color:var(--gold)">${pct}%</td>`; tbody.appendChild(tr);});
   document.getElementById('totalTxt').innerText=`H:${tot.H} T:${tot.T} S:${tot.S} I:${tot.I} D:${tot.D} A:${tot.A} | Records: ${abs.length}`;
-  if(chart1) chart1.destroy();
-  Chart.defaults.color='#aaa';
-  chart1=new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:['H','T','S','I','D','A'],datasets:[{data:[tot.H,tot.T,tot.S,tot.I,tot.D,tot.A],backgroundColor:['#E7C65A','#8A7A3A','#3A3A3E','#555','#777','#222'],borderColor:'#18181C',borderWidth:2}]},options:{plugins:{legend:{position:'bottom',labels:{color:'#ccc',boxWidth:12}}},cutout:'58%'}});
+  if(chart1) chart1.destroy(); Chart.defaults.color='#999';
+  chart1=new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:['H','T','S','I','D','A'],datasets:[{data:[tot.H,tot.T,tot.S,tot.I,tot.D,tot.A],backgroundColor:['#E7C65A','#8A7A3A','#555','#777','#999','#222'],borderWidth:0}]},options:{plugins:{legend:{position:'bottom',labels:{color:'#aaa',boxWidth:12}}},cutout:'58%'}});
   window._map=map;
- }catch(err){debug.innerText="ERROR: "+err.message; alert(err.message);}
+ }catch(e){debug.innerText="ERROR: "+e.message}
 }
-function showGrafik(id,nama){
- let r=window._map[id]; document.getElementById('gJudul').innerText="◉ TELEMETRY: "+nama.toUpperCase();
- if(chart2) chart2.destroy();
- chart2=new Chart(document.getElementById('c2'),{type:'bar',data:{labels:['H','T','S','I','D','A'],datasets:[{label:nama,data:[r.H,r.T,r.S,r.I,r.D,r.A],backgroundColor:['#E7C65A','#C9B06A','#3A3A40','#5A5A60','#7A7A80','#1E1E22'],borderColor:'#E7C65A',borderWidth:1,borderRadius:6}]},options:{plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(255,255,255,.06)'},ticks:{color:'#888'}},x:{grid:{display:false},ticks:{color:'#aaa'}}}}});
- const card=document.getElementById('c2').closest('.card'); card.classList.add('pulse'); setTimeout(()=>card.classList.remove('pulse'),700);
-}
+const blnEl=document.getElementById('bln'); const thnEl=document.getElementById('thn');
+function showGrafik(id,nama){let r=window._map[id]; document.getElementById('gJudul').innerText="◉ "+nama.toUpperCase(); if(chart2) chart2.destroy(); chart2=new Chart(document.getElementById('c2'),{type:'bar',data:{labels:['H','T','S','I','D','A'],datasets:[{label:nama,data:[r.H,r.T,r.S,r.I,r.D,r.A],backgroundColor:['#E7C65A','#8A7A3A','#555','#777','#999','#222']}]},options:{plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(255,255,255,.06)'},ticks:{color:'#888'}},x:{grid:{display:false},ticks:{color:'#888'}}}}}); document.getElementById('c2').closest('.card').classList.add('pulse'); setTimeout(()=>document.getElementById('c2').closest('.card').classList.remove('pulse'),700);}
 load();
-</script>
-</body>
-</html>
+</script></body></html>
