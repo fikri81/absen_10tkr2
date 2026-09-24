@@ -1,30 +1,48 @@
 <!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>PIT STOP - 10 TKR 2 RACING</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<title>10 TKR 2 - PIT STOP</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9/dist/leaflet.css"/><script src="https://unpkg.com/leaflet@1.9/dist/leaflet.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Inter:wght@600&display=swap" rel="stylesheet">
-<style>:root{--gold:#FFD700;--dark:#0e0e11;--card:#18181d}body{margin:0;background:var(--dark);color:#fff;font-family:Inter,sans-serif}
-.header{text-align:center;padding:16px;border-bottom:4px solid var(--gold);background:repeating-linear-gradient(45deg,#111 0 20px,#1a1a1a 20px 40px)}h1{font-family:Orbitron;color:var(--gold);margin:0;letter-spacing:2px;font-size:19px}
-.box{max-width:460px;margin:auto;padding:12px}.card{background:var(--card);border:1px solid #222;border-radius:18px;padding:14px}
-.glow{width:100%;padding:14px;border-radius:12px;border:0;font-family:Orbitron;font-weight:900;cursor:pointer;margin-top:8px}.gold{background:linear-gradient(var(--gold),#FFAA00);color:#000}.green{background:linear-gradient(#22ff88,#00aa55);color:#000}
-.sbtn{padding:11px;border-radius:10px;border:1px solid #333;background:#111;color:#888;font-family:Orbitron;font-size:10px}.sbtn.active{border-color:var(--gold);color:var(--gold);box-shadow:0 0 12px #FFD70066}
-select,input{width:100%;padding:12px;margin:6px 0;background:#0f0f13;border:1px solid #333;border-radius:10px;color:#fff}
-video{width:100%;border-radius:14px;background:#000;aspect-ratio:3/4;object-fit:cover}#map{height:180px;border-radius:12px;margin:8px 0;border:1px solid #333}
-.lock{position:fixed;inset:0;background:#000f;z-index:100;display:none;align-items:center;justify-content:center;text-align:center;padding:20px}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@800;900&display=swap" rel="stylesheet">
+<style>
+:root{--ph-orange:#FFA31A;--ph-black:#000;--ph-white:#fff;--bg:#0e0e0e;--card:#18181b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#fff;font-family:'Inter',system-ui,sans-serif;font-weight:800}
+.header{text-align:center;padding:18px 12px;background:#000;border-bottom:2px solid #222}
+.ph-logo{font-size:26px;letter-spacing:-0.5px;line-height:1;display:inline-flex;align-items:center;gap:0}
+.ph-logo .white{color:#fff;font-weight:900;letter-spacing:-1px}
+.ph-logo .box{background:var(--ph-orange);color:#000;padding:2px 8px;border-radius:6px;margin-left:6px;font-weight:900;letter-spacing:-0.5px;box-shadow:0 0 0 1px var(--ph-orange)}
+.clock{font-size:11px;color:#888;letter-spacing:1px;margin-top:8px;font-weight:600}
+.strip{height:6px;background:repeating-linear-gradient(90deg,#fff 0 14px,#000 14px 28px);margin-top:12px;opacity:.9}
+.box{max-width:460px;margin:auto;padding:12px}.card{background:var(--card);border:1px solid #242424;border-radius:16px;padding:14px;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+.glow{width:100%;padding:14px;border-radius:10px;border:0;font-family:'Inter';font-weight:900;cursor:pointer;margin-top:8px;letter-spacing:.3px}
+.gold{background:var(--ph-orange);color:#000}.gold:hover{filter:brightness(1.08);box-shadow:0 0 18px rgba(255,163,26,.45)}
+.green{background:#fff;color:#000}
+.sbtn{padding:11px;border-radius:10px;border:1px solid #2a2a2a;background:#101010;color:#777;font-family:'Inter';font-weight:800;font-size:10px;letter-spacing:.5px;transition:.2s}
+.sbtn.active{border-color:var(--ph-orange);color:var(--ph-orange);background:#1a1408;box-shadow:0 0 0 1px rgba(255,163,26,.3),0 0 14px rgba(255,163,26,.25)}
+select,input{width:100%;padding:12px;margin:6px 0;background:#0f0f10;border:1px solid #2a2a2a;border-radius:10px;color:#fff;font-weight:600}
+select:focus,input:focus{border-color:var(--ph-orange);outline:none;box-shadow:0 0 0 2px rgba(255,163,26,.2)}
+video{width:100%;border-radius:14px;background:#000;aspect-ratio:3/4;object-fit:cover;border:1px solid #222}#map{height:180px;border-radius:12px;margin:8px 0;border:1px solid #222}
+.lock{position:fixed;inset:0;background:#000e;z-index:100;display:none;align-items:center;justify-content:center;text-align:center;padding:20px}
+a.ph-link{color:var(--ph-orange);font-size:12px;font-weight:800;text-decoration:none;border:1px solid rgba(255,163,26,.3);padding:8px 12px;border-radius:8px;display:inline-block;margin-top:10px}
+a.ph-link:hover{background:var(--ph-orange);color:#000}
 </style></head><body>
-<div class="header"><h1>10 TKR 2 PIT STOP</h1><small id="clock" style="font-family:Orbitron;color:#888">--:--:-- WIB</small><div style="height:8px;background:repeating-linear-gradient(90deg,#fff 0 15px,#000 15px 30px);margin-top:8px"></div></div>
-<div id="lockScreen" class="lock"><div class="card"><h2 style="font-family:Orbitron;color:var(--gold)">🏁 TRACK CLOSED</h2><p id="lockMsg">Tutup jam 16:00 - Buka 05:30</p><p id="countdown" style="font-family:Orbitron;font-size:24px;color:#fff"></p><a href="rekap.html" style="color:var(--gold)">Lihat Rekap →</a></div></div>
-<div id="login" style="position:fixed;inset:0;background:var(--dark);z-index:50;display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:360px;text-align:center"><h2 style="font-family:Orbitron;color:var(--gold)">TEAM ACCESS</h2><p style="font-size:11px;color:#666">Password rahasia TKR 2</p><input type="password" id="pass" placeholder="tkr#2Racing"><button class="glow gold" id="btnLogin" style="margin-top:10px">🏁 START ENGINE</button><p id="loginMsg" style="color:#f55;font-size:11px"></p></div></div>
+<div class="header">
+  <div class="ph-logo"><span class="white">10TKR2</span><span class="box">PITSTOP</span></div>
+  <div id="clock" class="clock">--:--:-- WIB</div>
+  <div class="strip"></div>
+</div>
+<div id="lockScreen" class="lock"><div class="card"><h2 style="color:var(--ph-orange)">TRACK CLOSED</h2><p id="lockMsg">Tutup jam 16:00 - Buka 05:30</p><p id="countdown" style="font-size:24px;color:#fff"></p><a class="ph-link" href="rekap.html">Lihat Rekap →</a></div></div>
+<div id="login" style="position:fixed;inset:0;background:var(--bg);z-index:50;display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:360px;text-align:center"><div class="ph-logo" style="justify-content:center;margin-bottom:12px"><span class="white">10TKR2</span><span class="box">LOGIN</span></div><p style="font-size:11px;color:#666;font-weight:600">Password rahasia TKR 2</p><input type="password" id="pass" placeholder="tkr#2Racing"><button class="glow gold" id="btnLogin" style="margin-top:10px">START ENGINE</button><p id="loginMsg" style="color:#f55;font-size:11px"></p></div></div>
 <div class="box" id="app" style="display:none"><div class="card">
-<label style="font-size:10px;color:var(--gold);font-family:Orbitron">PEMBALAP</label><select id="nama"></select>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0"><button class="sbtn active" data-v="H">🏁 HADIR</button><button class="sbtn" data-v="S">🤒 SAKIT</button><button class="sbtn" data-v="I">📄 IZIN</button><button class="sbtn" data-v="D">🛠️ DISPENSASI</button></div>
-<div id="buktiBox" style="display:none"><label style="font-size:10px;color:var(--gold);font-family:Orbitron">BUKTI RESMI / FOTO DINAS</label><input type="file" id="bukti" accept="image/*,.pdf"><small style="color:#888;font-size:10px">Wajib upload untuk S/I/D</small></div>
+<label style="font-size:10px;color:var(--ph-orange);letter-spacing:.8px">PEMBALAP</label><select id="nama"></select>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0"><button class="sbtn active" data-v="H">HADIR</button><button class="sbtn" data-v="S">SAKIT</button><button class="sbtn" data-v="I">IZIN</button><button class="sbtn" data-v="D">DISPENSASI</button></div>
+<div id="buktiBox" style="display:none"><label style="font-size:10px;color:var(--ph-orange)">BUKTI RESMI / FOTO DINAS</label><input type="file" id="bukti" accept="image/*,.pdf"><small style="color:#888;font-size:10px">Wajib upload untuk S/I/D</small></div>
 <select id="jamke"><option>Jam ke 1</option><option>Jam ke 2</option><option>Jam ke 3</option><option>Jam ke 4</option><option>Jam ke 5</option><option>Jam ke 6</option><option>Jam ke 7</option><option>Jam ke 8</option></select>
 <video id="vid" autoplay playsinline muted></video><canvas id="can" style="display:none"></canvas><img id="prev" style="width:100%;display:none;border-radius:12px;margin-top:8px">
-<div id="map"></div><p id="gps" style="font-size:10px;color:#aaa"></p><p id="jarak" style="font-family:Orbitron;font-size:10px"></p>
-<p id="statusJam" style="font-family:Orbitron;font-size:11px;text-align:center;margin:6px 0"></p>
+<div id="map"></div><p id="gps" style="font-size:10px;color:#aaa"></p><p id="jarak" style="font-size:10px;font-weight:800"></p>
+<p id="statusJam" style="font-size:11px;text-align:center;margin:6px 0;font-weight:800"></p>
 <button class="glow gold" id="btnSelfie">📸 CAPTURE DRIVER</button><button class="glow green" id="btnAbsen" disabled>SELFIE DULU UNTUK START</button>
-<p id="msg" style="text-align:center;font-family:Orbitron;font-size:11px;color:var(--gold);margin-top:10px"></p>
-<p style="text-align:center;margin-top:10px"><a href="rekap.html" style="color:var(--gold);font-size:12px;font-family:Orbitron">📊 REKAP BULANAN H/S/I/D/T/A + GRAFIK</a></p>
+<p id="msg" style="text-align:center;font-size:11px;color:var(--ph-orange);margin-top:10px;font-weight:800"></p>
+<p style="text-align:center;margin-top:14px"><a class="ph-link" href="rekap.html">📊 REKAP BULANAN + GRAFIK PS5</a></p>
 </div></div>
 <script>
 const PASS="tkr#2Racing";
@@ -34,16 +52,16 @@ function getWIB(){return new Date(new Date().toLocaleString("en-US",{timeZone:"A
 function cekJam(){let w=getWIB();let h=w.getHours()+w.getMinutes()/60;let jamStr=w.toLocaleTimeString("id-ID",{hour12:false});document.getElementById('clock').innerText=jamStr+" WIB";
  let st=document.getElementById('statusJam'),lock=document.getElementById('lockScreen');
  if(h>=16||h<5.5){lock.style.display='flex';let besok=new Date(w);if(h>=16)besok.setDate(besok.getDate()+1);besok.setHours(5,30,0,0);let diff=besok-w;let hh=Math.floor(diff/3600000),mm=Math.floor((diff%3600000)/60000),ss=Math.floor((diff%60000)/1000);document.getElementById('countdown').innerText=`BUKA DALAM ${hh}j ${mm}m ${ss}d`;return "TUTUP";}
- else if(h>=5.5&&h<=7.5){st.innerHTML=`<span style="color:#0f0">● ON TIME - HADIR 05:30-07:30</span>`;return "H";} 
- else{st.innerHTML=`<span style="color:#ffcc00">● TELAT - LEWAT 07:30 - MASUK T</span>`;return "T";}}
+ else if(h>=5.5&&h<=7.5){st.innerHTML=`<span style="color:#22ff88">● ON TIME - HADIR 05:30-07:30</span>`;return "H";} 
+ else{st.innerHTML=`<span style="color:#FFA31A">● TELAT - LEWAT 07:30 - MASUK T</span>`;return "T";}}
 setInterval(cekJam,1000);
 document.getElementById('btnLogin').onclick=()=>{if(document.getElementById('pass').value===PASS){document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';init();}else document.getElementById('loginMsg').innerText='⛔ Password salah!';};
 document.querySelectorAll('.sbtn').forEach(b=>b.onclick=()=>{document.querySelectorAll('.sbtn').forEach(x=>x.classList.remove('active'));b.classList.add('active');status=b.dataset.v;document.getElementById('buktiBox').style.display=status==='H'?'none':'block';});
 async function init(){let {data}=await supa.from('siswa').select('*').order('nama');document.getElementById('nama').innerHTML=data.map(s=>`<option value="${s.id}">${s.nama}</option>`).join('');
- let map=L.map('map').setView([SEK.lat,SEK.lng],16);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);L.circle([SEK.lat,SEK.lng],{radius:200,color:'#FFD700',fillOpacity:0.1}).addTo(map);
+ let map=L.map('map').setView([SEK.lat,SEK.lng],16);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);L.circle([SEK.lat,SEK.lng],{radius:200,color:'#FFA31A',fillOpacity:0.12}).addTo(map);
  let st=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user"}});document.getElementById('vid').srcObject=st;
- navigator.geolocation.watchPosition(p=>{pos=p.coords;jrk=Math.round(6371000*2*Math.asin(Math.sqrt(Math.sin((p.coords.latitude-SEK.lat)*Math.PI/360)**2+Math.cos(SEK.lat*Math.PI/180)*Math.cos(p.coords.latitude*Math.PI/180)*Math.sin((p.coords.longitude-SEK.lng)*Math.PI/360)**2)));document.getElementById('gps').innerText=`📍 ${p.coords.latitude.toFixed(5)}, ${p.coords.longitude.toFixed(5)}`;document.getElementById('jarak').innerHTML=`Jarak ${jrk}m ${jrk<=200?'<span style="color:#0f0">INSIDE TRACK</span>':'<span style="color:#f44">OUTSIDE</span>'}`;},{},{enableHighAccuracy:true});}
-document.getElementById('btnSelfie').onclick=()=>{let v=document.getElementById('vid'),c=document.getElementById('can'),i=document.getElementById('prev');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);c.toBlob(b=>{selfie=b;i.src=URL.createObjectURL(b);i.style.display='block';document.getElementById('btnAbsen').disabled=false;document.getElementById('btnAbsen').innerText='🏁 KIRIM - '+ (cekJam()==='T'&&status==='H'?'TELAT':'HADIR');},'image/jpeg',0.75);};
+ navigator.geolocation.watchPosition(p=>{pos=p.coords;jrk=Math.round(6371000*2*Math.asin(Math.sqrt(Math.sin((p.coords.latitude-SEK.lat)*Math.PI/360)**2+Math.cos(SEK.lat*Math.PI/180)*Math.cos(p.coords.latitude*Math.PI/180)*Math.sin((p.coords.longitude-SEK.lng)*Math.PI/360)**2)));document.getElementById('gps').innerText=`📍 ${p.coords.latitude.toFixed(5)}, ${p.coords.longitude.toFixed(5)}`;document.getElementById('jarak').innerHTML=`Jarak ${jrk}m ${jrk<=200?'<span style="color:#22ff88">INSIDE TRACK</span>':'<span style="color:#ff4444">OUTSIDE</span>'}`;},{},{enableHighAccuracy:true});}
+document.getElementById('btnSelfie').onclick=()=>{let v=document.getElementById('vid'),c=document.getElementById('can'),i=document.getElementById('prev');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);c.toBlob(b=>{selfie=b;i.src=URL.createObjectURL(b);i.style.display='block';document.getElementById('btnAbsen').disabled=false;document.getElementById('btnAbsen').innerText='KIRIM - '+ (cekJam()==='T'&&status==='H'?'TELAT':'HADIR');},'image/jpeg',0.75);};
 document.getElementById('btnAbsen').onclick=async()=>{
  if(cekJam()==="TUTUP"){alert("Absen tutup jam 16:00 Bos");return;}
  if(status!=='H'&&!document.getElementById('bukti').files[0]){alert("Wajib upload bukti Bos");return;}
