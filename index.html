@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Absen 10 TKR 2 - SMKN 1 Wongsorejo</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+body{font-family:Inter,sans-serif;background:#f0f9ff;padding:16px;margin:0}
+.box{background:white;padding:20px;border-radius:20px;max-width:420px;margin:auto;box-shadow:0 10px 30px #0001}
+h3{margin:0 0 10px;line-height:1.2} small{color:#64748b}
+select{width:100%;padding:12px;margin:8px 0;border:1px solid #cbd5e1;border-radius:10px}
+video{width:100%;border-radius:12px;background:#000;aspect-ratio:3/4;object-fit:cover}
+button{background:#6366f1;color:white;border:0;padding:14px;width:100%;border-radius:12px;font-weight:bold;font-size:16px;margin-top:10px}
+button:disabled{background:#94a3b8}
+#prev{width:100%;border-radius:12px;margin-top:10px;display:none}
+.badge{padding:4px 8px;border-radius:6px;font-size:12px} .ok{background:#dcfce7;color:#166534} .no{background:#fee2e2;color:#991b1b}
+</style></head><body>
+<div class="box">
+<h3>ABSEN 10 TKR 2<br><small>SMKN 1 Wongsorejo - Radius 200m</small></h3>
+<select id="nama"><option>Loading siswa...</option></select>
+<video id="vid" autoplay playsinline muted></video>
+<canvas id="can" style="display:none"></canvas>
+<img id="prev">
+<p id="gps">📍 Mencari GPS...</p>
+<p id="jarak"></p>
+<button id="btnSelfie">📸 AMBIL SELFIE (Tap Kamera)</button>
+<button id="btnAbsen" disabled>Selfie dulu baru bisa absen</button>
+<p id="status" style="text-align:center;font-weight:bold;margin-top:12px"></p>
+</div>
+<script>
+const SUPABASE_URL = "https://xozwsdjlifmoywmxdoaj.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhvendzZGpsaWZtb3l3bXhkb2FqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxOTg1ODEsImV4cCI6MjEwNTc3NDU4MX0.8dtF7YpVlWGZ3OErpqAkPsBpcBPa0xQBs4NuC9cIPlY";
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const BUCKET = "selfie_tkr";
+const SEKOLAH = {lat: -7.9833, lng: 114.3967};
+const RADIUS = 200;
+
+function hitungJarak(lat1,lon1,lat2,lon2){
+  const R=6371000; const dLat=(lat2-lat1)*Math.PI/180; const dLon=(lon2-lon1)*Math.PI/180;
+  const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+  return Math.round(R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a)));
+}
+
+async function loadSiswa(){
+  let {data}=await supabaseClient.from('siswa').select('*').order('nama');
+  document.getElementById('nama').innerHTML=data.map(s=>`<option value="${s.id}">${s.nama}</option>`).join('');
+}
+loadSiswa();
+
+let stream, currentPos=null, selfieBlob=null;
+navigator.mediaDevices.getUserMedia({video:{facingMode:"user"}}).then(s=>{stream=s; document.getElementById('vid').srcObject=s;});
+
+navigator.geolocation.watchPosition(p=>{
+  currentPos=p.coords;
+  const j=hitungJarak(SEKOLAH.lat,SEKOLAH.lng,p.coords.latitude,p.coords.longitude);
+  document.getElementById('gps').innerHTML=`📍 ${p.coords.latitude.toFixed(6)}, ${p.coords.longitude.toFixed(6)}`;
+  document.getElementById('jarak').innerHTML=`Jarak: ${j} m <span class="badge ${j<=RADIUS?'ok':'no'}">${j<=RADIUS?'DI DALAM':'DI LUAR 200m'}</span>`;
+  if(selfieBlob && j<=RADIUS){document.getElementById('btnAbsen').disabled=false; document.getElementById('btnAbsen').innerText='✅ KIRIM ABSEN SEKARANG'}
+}, ()=>{document.getElementById('gps').innerText='Aktifkan GPS HP'}, {enableHighAccuracy:true});
+
+document.getElementById('btnSelfie').onclick=()=>{
+  let v=document.getElementById('vid'), c=document.getElementById('can'), img=document.getElementById('prev');
+  c.width=v.videoWidth; c.height=v.videoHeight; c.getContext('2d').drawImage(v,0,0);
+  c.toBlob(b=>{selfieBlob=b; img.src=URL.createObjectURL(b); img.style.display='block'; document.getElementById('status').innerText='Selfie OK';},'image/jpeg',0.75);
+};
+
+document.getElementById('btnAbsen').onclick=async()=>{
+  let status=document.getElementById('status'); status.innerText='⏳ Mengupload...';
+  let fileName=`${Date.now()}.jpg`;
+  await supabaseClient.storage.from(BUCKET).upload(fileName,selfieBlob);
+  let url=supabaseClient.storage.from(BUCKET).getPublicUrl(fileName).data.publicUrl;
+  let j=hitungJarak(SEKOLAH.lat,SEKOLAH.lng,currentPos.latitude,currentPos.longitude);
+  await supabaseClient.from('absensi').insert({siswa_id:document.getElementById('nama').value, jam:new Date().toLocaleTimeString('id-ID'), lat:currentPos.latitude, lng:currentPos.longitude, jarak:j, selfie_url:url, status:'H'});
+  status.innerText='✅ BERHASIL ABSEN!';
+};
+</script></body></html>
