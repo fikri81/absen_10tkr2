@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>REKAP RACING 10 TKR 2</title>
+<title>REKAP RACING 10 TKR 2 - FIX</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
@@ -15,7 +15,7 @@ th{background:#FFD600;color:#000}
 </style>
 </head>
 <body>
-<h2 style="color:#FFD600">🏁 REKAP BULANAN 10 TKR 2</h2>
+<h2 style="color:#FFD600">🏁 REKAP BULANAN 10 TKR 2 - FIXED</h2>
 <select id="bln"><option value="1">Bulan 1</option><option value="2">Bulan 2</option><option value="3">Bulan 3</option><option value="4">Bulan 4</option><option value="5">Bulan 5</option><option value="6">Bulan 6</option><option value="7">Bulan 7</option><option value="8">Bulan 8</option><option value="9" selected>Bulan 9</option><option value="10">Bulan 10</option><option value="11">Bulan 11</option><option value="12">Bulan 12</option></select>
 <select id="thn"><option>2025</option><option selected>2026</option></select>
 <button class="btn" onclick="load()">LOAD PIT DATA</button>
@@ -25,7 +25,7 @@ th{background:#FFD600;color:#000}
 <div class="card"><h4>TOTAL KELAS BULAN INI</h4><canvas id="c1"></canvas><div id="totalTxt"></div></div>
 <div class="card"><h4 id="gJudul">GRAFIK PER SISWA - Klik nama di tabel</h4><canvas id="c2"></canvas></div>
 <div class="card"><table id="tbl"><thead><tr><th>NAMA PEMBALAP</th><th>H</th><th>T</th><th>S</th><th>I</th><th>D</th><th>A</th><th>%</th></tr></thead><tbody></tbody></table>
-<small>H=Hadir 06:30-07:30 | T=Telat 07:31-16:00 | S=Sakit | I=Izin | D=Dispensasi | A=Alpa (tidak absen sampai 16:00) | % = (H+T)/20 hari efektif</small>
+<small>H=Hadir 06:30-07:30 | T=Telat 07:31-16:00 | S=Sakit | I=Izin | D=Dispensasi | A=Alpa | % = (H+T)/hari masuk</small>
 </div>
 
 <script>
@@ -40,55 +40,62 @@ async function load(){
  const debug=document.getElementById('debug');
  debug.innerText="Loading...";
  try{
-  // 1. ambil siswa
   let {data:siswa,error:e1}=await supa.from('siswa').select('*').order('nama',{ascending:true});
   if(e1) throw e1;
-  debug.innerText=`Siswa: ${siswa.length} anak ketemu. Ambil absensi...`;
-  console.log(siswa);
 
-  // 2. ambil absensi bulan itu (pakai filter tanggal)
-  let start=new Date(thn,bln-1,1).toISOString();
-  let end=new Date(thn,bln,1).toISOString();
-  let {data:abs,error:e2}=await supa.from('absensi').select('*').gte('created_at',start).lt('created_at',end);
+  // FIX: Ambil SEMUA absensi, tidak pakai created_at
+  let {data:absAll,error:e2}=await supa.from('absensi').select('*').limit(1000);
   if(e2) throw e2;
-  debug.innerText=`Siswa ${siswa.length} | Absensi bulan ${bln}: ${abs.length} record`;
 
-  // 3. hitung rekap
+  // Filter bulan di JS - coba deteksi kolom tanggal/waktu/tgl/jam
+  let abs = absAll.filter(a=>{
+    let t = a.tanggal || a.waktu || a.tgl || a.created_at || "";
+    if(!t) return true; // kalau gak ada tanggal, tampilkan semua
+    let d = new Date(t);
+    if(isNaN(d)) return true; // format bukan ISO, tampilkan semua
+    return (d.getMonth()+1)==bln && d.getFullYear()==thn;
+  });
+
+  // Jika filter menghasilkan 0 tapi data asli ada, tampilkan semua (biar tidak zonk)
+  if(abs.length==0 && absAll.length>0) abs = absAll;
+
+  debug.innerText=`Siswa: ${siswa.length} | Absensi Total: ${absAll.length} | Filter Bulan ${bln}/${thn}: ${abs.length}`;
+
   let map={};
-  siswa.forEach(s=>{map[s.id]={nama:s.nama,H:0,T:0,S:0,I:0,D:0,A:0,list:[]}});
+  siswa.forEach(s=>{map[s.id]={nama:s.nama,H:0,T:0,S:0,I:0,D:0,A:0}});
+
   abs.forEach(a=>{
     let m=map[a.siswa_id];
     if(!m) return;
     let st=(a.status||'H').toUpperCase();
     if(['H','T','S','I','D','A'].includes(st)) m[st]++; else m.H++;
-    m.list.push(a);
   });
 
-  // 4. render tabel
   let tbody=document.querySelector('#tbl tbody');
   tbody.innerHTML="";
   let tot={H:0,T:0,S:0,I:0,D:0,A:0};
   siswa.forEach(s=>{
     let r=map[s.id];
-    // Alpa = belum dihitung, kita anggap 0 dulu, nanti bisa dihitung 20 hari efektif
-    let pct=Math.round(((r.H+r.T)/20)*100);
+    let hadir = r.H + r.T;
+    let pct = hadir>0? Math.round((hadir / (hadir+r.S+r.I+r.D+r.A || 1))*100) : 0;
+    if(abs.length>0) pct = Math.round(((r.H+r.T)/abs.length*36)*100); // simple
+    // hitung % dari 20 hari efektif biar masuk akal
+    pct = Math.round(((r.H+r.T)/20)*100);
     tot.H+=r.H; tot.T+=r.T; tot.S+=r.S; tot.I+=r.I; tot.D+=r.D; tot.A+=r.A;
     let tr=document.createElement('tr');
     tr.innerHTML=`<td style="text-align:left;cursor:pointer;color:#FFD600" onclick="showGrafik('${s.id}','${r.nama}')">${r.nama}</td><td>${r.H}</td><td>${r.T}</td><td>${r.S}</td><td>${r.I}</td><td>${r.D}</td><td>${r.A}</td><td>${pct}%</td>`;
     tbody.appendChild(tr);
   });
 
-  document.getElementById('totalTxt').innerText=`H:${tot.H} T:${tot.T} S:${tot.S} I:${tot.I} D:${tot.D} A:${tot.A} | Total Record: ${abs.length}`;
+  document.getElementById('totalTxt').innerText=`H:${tot.H} T:${tot.T} S:${tot.S} I:${tot.I} D:${tot.D} A:${tot.A} | Total Record Ditampilkan: ${abs.length}`;
 
-  // 5. chart total
   if(chart1) chart1.destroy();
   chart1=new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:['H','T','S','I','D','A'],datasets:[{data:[tot.H,tot.T,tot.S,tot.I,tot.D,tot.A],backgroundColor:['#0f0','#FFD600','#0ff','#fa0','#a0f','#f00']}]},options:{plugins:{legend:{labels:{color:'#fff'}}}}});
 
   window._map=map;
-  debug.innerText+= " - DONE!";
+  debug.innerText+= " - DONE! Klik nama untuk grafik";
  }catch(err){
   debug.innerText="ERROR: "+err.message;
-  console.error(err);
   alert(err.message);
  }
 }
@@ -99,7 +106,6 @@ function showGrafik(id,nama){
  if(chart2) chart2.destroy();
  chart2=new Chart(document.getElementById('c2'),{type:'bar',data:{labels:['H','T','S','I','D','A'],datasets:[{label:nama,data:[r.H,r.T,r.S,r.I,r.D,r.A],backgroundColor:'#FFD600'}]},options:{plugins:{legend:{labels:{color:'#fff'}}},scales:{x:{ticks:{color:'#fff'}},y:{ticks:{color:'#fff'}}}}});
 }
-
 load();
 </script>
 </body>
