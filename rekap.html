@@ -1,48 +1,42 @@
 <!DOCTYPE html>
-<html><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>REKAP V8 - FINAL 06-16 + AUTO ALPA</title>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REKAP V8 - FINAL 06:00 - 16:00 + AUTO ALPA</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
-:root{--gold:#E7C65A;--bg:#0E0E10;--card:#18181C;--card2:#1F1F24}
-body{background:radial-gradient(900px at 50% -20%,#25252A 0%,var(--bg) 65%);color:#EAEAEA;font-family:'Inter',system-ui;margin:0;padding:16px}
-.logo-box{text-align:center;padding:12px 0 8px 0}
-h2{font-family:'Orbitron';letter-spacing:2.5px;color:var(--gold);text-align:center;margin:8px 0}
-.bar{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:14px auto;max-width:920px}
-.sel{appearance:none;background:var(--card);border:1px solid rgba(231,198,90,.3);color:#fff;padding:11px 14px;border-radius:12px;min-width:140px;font-weight:600}
-.btn{font-family:'Orbitron';background:linear-gradient(180deg,#2A2A2E,#17171A);border:1px solid var(--gold);color:var(--gold);padding:11px 20px;border-radius:12px;font-weight:700;letter-spacing:.8px;cursor:pointer}
-.card{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid rgba(231,198,90,.18);border-radius:20px;padding:16px;margin:14px auto;max-width:920px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
-table{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px;border-radius:14px;overflow:hidden;border:1px solid rgba(231,198,90,.18)}
-th{background:#232328;color:var(--gold);padding:10px 6px;font-family:'Orbitron';font-size:10.5px;letter-spacing:.6px;border-bottom:1px solid rgba(231,198,90,.25)}
-td{border-bottom:1px solid rgba(255,255,255,.05);padding:9px 6px;background:rgba(0,0,0,.18)}
-td:first-child{color:#EAD98A;font-weight:600;text-align:left}
-.badge{padding:2px 7px;border-radius:6px;font-size:10px;font-weight:800}.badge.H{background:#E7C65A;color:#000}.badge.T{background:#FFA31A;color:#000}.badge.S{background:#ffaa00;color:#000}.badge.I{background:#00e5ff;color:#000}.badge.D{background:#a0a0a0;color:#000}.badge.A{background:#ff4444;color:#fff}
-</style></head><body>
-
-<div class="logo-box">
-<img src="./logo-bulat.jpg" style="width:130px;height:130px;border-radius:50%;border:3px solid var(--gold);box-shadow:0 0 20px rgba(231,198,90,.4);object-fit:cover">
-<div style="font-family:Orbitron;color:var(--gold);font-size:9px;letter-spacing:2px;margin-top:6px">FIKRI • AUTOMOTIVE ENGLISH • SMKN WONGSOREJO - V8 FINAL</div>
+body{margin:0;background:#0e0e0e;color:#ffd700;font-family:Orbitron, sans-serif;padding:20px}
+.card{background:#1e1e1e;border:1px solid #333;border-radius:16px;padding:16px;margin-top:16px}
+.sel{background:#111;color:#fff;border:1px solid #555;border-radius:8px;padding:8px}
+.btn{padding:8px 16px;border-radius:8px;border:1px solid #ff8f00;background:#111;color:#ffd700;cursor:pointer;font-weight:bold}
+#tbl{width:100%;border-collapse:collapse;margin-top:10px;font-size:11px}
+#tbl th{background:#222;color:#ffcc00;padding:6px;border:1px solid #333}
+#tbl td{padding:6px;border:1px solid #333;color:#fff;text-align:center}
+</style>
+</head>
+<body>
+<center>
+<img src="https://i.imgur.com/8Km9tLL.png" style="width:90px;border-radius:50%;box-shadow:0 0 20px #ff8f00"><br>
+<small>FIKRI - AUTOMOTIVE ENGLISH - SMKN WONGSOREJO - V8 FINAL</small>
+<h2>◎ REKAP V8 · 06:00-16:00 · AUTO ALPA</h2>
+<div style="display:flex;gap:8px;justify-content:center">
+<input type="text" id="bln" class="sel" style="width:70px" value="SEP">
+<input type="number" id="thn" class="sel" style="width:80px" value="2026">
+<button class="btn" onclick="load()">◎ LOAD</button>
+<button class="btn" onclick="location.href='index.html'">← PIT</button>
 </div>
+<small id="debug" style="color:#888;display:block;margin-top:8px"></small>
+</center>
 
-<h2>◉ REKAP V8 • 06:00-16:00 • AUTO ALPA</h2>
-
-<div class="bar">
-<select id="bln" class="sel"><option value="1">JAN</option><option value="2">FEB</option><option value="3">MAR</option><option value="4">APR</option><option value="5">MEI</option><option value="6">JUN</option><option value="7">JUL</option><option value="8">AGS</option><option value="9" selected>SEP</option><option value="10">OKT</option><option value="11">NOV</option><option value="12">DES</option></select>
-<select id="thn" class="sel"><option>2025</option><option selected>2026</option></select>
-<button class="btn" onclick="load()">◉ LOAD</button>
-<a href="./index.html" class="btn" style="text-decoration:none">← PIT</a>
-</div>
-<div id="debug" style="text-align:center;color:var(--gold);font-size:11px"></div>
-
-<div class="card" style="border-color:#00ff88">
-<h4 style="font-family:Orbitron;color:#00ff88;text-align:center">➕ ABSENKAN S/I/D + UPLOAD KE BUKTI_TKR</h4>
+<div class="card">
+<h4 style="color:var(--gold);text-align:center;color:#00ff88">+ ABSENKAN S/I/D + UPLOAD KE BUKTI_TKR</h4>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
 <select id="absenNama" class="sel"></select>
-<select id="absenKet" class="sel"><option value="S">S - SAKIT</option><option value="I">I - IZIN</option><option value="D">D - DISPENSASI</option><option value="A">A - ALPA</option></select>
+<select id="absenStatus" class="sel"><option>S - SAKIT</option><option>I - IZIN</option><option>D - DISPEN</option><option>A - ALPA</option><option>T - TELAT</option><option>H - HADIR</option></select>
 </div>
 <input type="date" id="absenTgl" class="sel" style="width:100%;margin-top:8px">
-<label style="font-size:11px;color:#aaa;margin-top:8px;display:block">📎 Upload Surat (Masuk ke bukti_tkr):</label>
+<label style="font-size:9px;color:#aaa">Upload Surat (Masuk ke bukti_tkr):</label>
 <input type="file" id="dokFile" accept=".jpg,.jpeg,.png,.pdf" class="sel" style="width:100%;margin-top:4px">
 <button class="btn" id="btnAbsenGuru" style="width:100%;background:linear-gradient(180deg,#00ff88,#00cc66);color:#000;border-color:#00ff88;margin-top:8px">SIMPAN + UPLOAD DOKUMEN</button>
 </div>
@@ -50,121 +44,105 @@ td:first-child{color:#EAD98A;font-weight:600;text-align:left}
 <div class="card"><table id="tbl"><thead><tr><th>NAMA</th><th>H</th><th>T (Menit)</th><th>S</th><th>I</th><th>D</th><th>A</th><th>%</th></tr></thead><tbody></tbody></table>
 <small style="color:#666">* A = Otomatis kalau gak absen s/d 16:00. T = hitung dari jam 07:00 (misal masuk jam 10:00 = 180 menit telat)</small>
 </div>
-<div class="card"><h4 style="font-family:Orbitron;color:var(--gold);text-align:center">DETAIL TELAT HARIAN</h4><div id="detailTelat" style="font-size:11px"></div></div>
-<div class="card"><h4 style="font-family:Orbitron;color:var(--gold);text-align:center">FOTO SELFIE + DOKUMEN BUKTI_TKR</h4><div id="fotoList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px"></div></div>
+<div class="card"><h4 style="color:var(--gold);text-align:center">DETAIL TELAT HARIAN</h4><div id="detailTelat" style="font-size:11px"></div></div>
+<div class="card"><h4 style="color:var(--gold);text-align:center">FOTO SELFIE + DOKUMEN BUKTI_TKR</h4><div id="fotoList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px"></div></div>
 
 <script>
 const SUPA_URL="https://xozwsdjlifmoywmxdoaj.supabase.co";
 const SUPA_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhvenZzZGpsaWZtb3l3bXhkb2FqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc3MTEzNjgsImV4cCI6MjA3MzI4NzM2OH0.EkK2-9WkaC2u1oMTSR_C2v24a-LfR1pLEqRStJwRwR4";
 const supa=supabase.createClient(SUPA_URL,SUPA_KEY);
+
 (async()=>{
-  let {data:siswa}=await supa.from('siswa').select('*').order('nama');
-  if(!siswa || siswa.length==0){
-    siswa=["MUHAMMAD AMRUL FARUK","MUHAMMAD ARVIN ARGYA PRATAMA","MUHAMMAD DANIELL AMIN","MUHAMMAD FAISAL","MUHAMMAD IBRAHIM AZIZI","MUHAMMAD NAUFAL KIRAM","MUHAMMAD NAZRIEL FURQON","MUHAMMAD ROZAK KUMULLAH","MUHAMMAD SANDI PRATAMA","NIZAM ARJU HEAVENA HASIM","PUTRA ADITIA FIRMANSYAH","PUTRA ARIF OKTAVIANSYAH","RADDY ARDIANSYAH","RAFA ALFANDI DANISA PUTRA","RAFAEL SETYA NUR IMAN","RAMADIAN BARAKA MULYA","RIFKY ADITYA PRATAMA","RIKO ABDILLAH","RINO ADITIA PRATAMA","ROBI ANSA","SAIFUL BAHRI","SELIN FATHIR MAULANA","SEMI MAULANA YAHYA","SULTAN ATSAR WALHADITS","SURYA AJI WICAKSONO","SYAFIQ HIKAM AL BUKHORI","TAUFIQUUR RAHMAN ILHAM","TOLAK RAHMAT","TRIO RADIKA PUTRA","TRISNA ELLIA WIDHI WARDANA","VITO JULIO SAPUTRA","WIL DANUL FARUQ","WISNU AJI SASONGKO","YONGKI FIRMANSYAH","YUSUF AFANDI","ZAINUR ROHIQ FIRDIANO"].map(n=>({nama:n}));
-  }
-  allSiswa=siswa;
-  const selAbsen=document.getElementById('absenNama');
-  allSiswa.forEach(s=>{let o=document.createElement('option');o.value=s.nama;o.innerText=s.nama;selAbsen.appendChild(o);});
-  document.getElementById('absenTgl').value=new Date().toISOString().slice(0,10);
-  load();
+let {data:siswa}=await supa.from('siswa').select('*').order('nama');
+if(!siswa || siswa.length==0){
+siswa=["MUHAMMAD AMRUL FARUK","MUHAMMAD ARVIN ARGYA PRATAMA","MUHAMMAD DANIELL AMIN","MUHAMMAD FAISAL","MUHAMMAD IBRAHIM AZIZI","MUHAMMAD NAUFAL KIRAM","MUHAMMAD NAZRIE","MUHAMMAD RAFI AHMAD","MUHAMMAD RIZKI","NANDA DWI CAHYA"];
+}
+allSiswa=siswa;
+const selAbsen=document.getElementById('absenNama');
+allSiswa.forEach(s=>{let o=document.createElement('option');o.value=s.nama||s;o.innerText=s.nama||s;selAbsen.appendChild(o);});
+document.getElementById('absenTgl').value=new Date().toISOString().slice(0,10);
+load();
 })();
 
 async function load(){
- const bln=parseInt(document.getElementById('bln').value); const thn=parseInt(document.getElementById('thn').value); const debug=document.getElementById('debug');
- debug.innerText="▸ Loading V8...";
- try{
-let {data:absAll, error:errAbs} = await supa.from('absensi').select('*').limit(2000);
+const blnText=document.getElementById('bln').value.toUpperCase();
+const blnMap={JAN:1,FEB:2,MAR:3,APR:4,MEI:5,JUN:6,JUL:7,AGU:8,SEP:9,OKT:10,NOV:11,DES:12};
+const bln=blnMap[blnText]||9;
+const thn=parseInt(document.getElementById('thn').value);
+const debug=document.getElementById('debug');
+debug.innerText=" Loading V8...";
+try{
+let {data:absAll, error:errAbs}=await supa.from('absensi').select('*').limit(2000);
 if(errAbs) throw new Error(errAbs.message);
-if(!absAll) absAll = [];
+if(!absAll) absAll=[];
 let abs=absAll.filter(a=>{let t=a.tanggal||""; if(!t) return false; let d=new Date(t); if(isNaN(d)) return false; return (d.getMonth()+1)==bln && d.getFullYear()==thn;});
-  debug.innerText=`● ${abs.length} records bulan ini • 06:00-16:00 • Auto Alpa aktif`;
 
-  // Hitung tanggal efektif (hari yang sudah lewat s/d hari ini kalau bulan ini)
-  let hariEfektif = [];
-  let today = new Date(); let isBulanIni = (today.getMonth()+1)==bln && today.getFullYear()==thn;
-  let jumlahHari = new Date(thn, bln, 0).getDate();
-  for(let i=1;i<=jumlahHari;i++){
-    let d = new Date(thn, bln-1, i);
-    if(d > today) continue; // masa depan jangan dihitung Alpa
-    if(d.getDay()==0) continue; // skip Minggu kalau 5 hari kerja (Senin-Sabtu? kalau 5 hari Senin-Jumat, tambah cek 6)
-    hariEfektif.push(d.toISOString().slice(0,10));
-  }
-  let distinctTanggalDiDB = [...new Set(abs.map(a=>a.tanggal))];
+const tbody=document.querySelector('#tbl tbody');
+tbody.innerHTML="";
+let detailHtml="";
+let fotoHtml="";
 
-  let map={};
-  allSiswa.forEach(s=>{let nm=s.nama; map[nm]={nama:nm,H:0,T:0,S:0,I:0,D:0,A:0,totalTelat:0,detail:[]}});
+for(let s of allSiswa){
+let nama=s.nama||s;
+let dataS=abs.filter(x=>x.nama==nama);
+let h=dataS.filter(x=>x.status=='H').length;
+let tList=dataS.filter(x=>x.status=='T');
+let t=tList.length;
+let sKit=dataS.filter(x=>x.status=='S').length;
+let i=dataS.filter(x=>x.status=='I').length;
+let d=dataS.filter(x=>x.status=='D').length;
+let a=dataS.filter(x=>x.status=='A').length;
+let total=h+t+sKit+i+d+a;
+let persen=total>0?Math.round((h/total)*100):0;
 
-  // Hitung yang sudah ada di DB
-  let absByNamaTanggal = {};
-  abs.forEach(a=>{
-    let nm=a.nama; if(!map[nm]) map[nm]={nama:nm,H:0,T:0,S:0,I:0,D:0,A:0,totalTelat:0,detail:[]};
-    let ket=(a.keterangan||'H').toUpperCase();
-    if(['H','T','S','I','D','A'].includes(ket)) map[nm][ket]++;
-    if(ket=='T' && a.telat_menit) {map[nm].totalTelat+=parseInt(a.telat_menit)||0; map[nm].detail.push(`${a.tanggal}: Telat ${a.telat_menit} menit`);}
-    let key = nm+"|"+a.tanggal;
-    absByNamaTanggal[key]=true;
-  });
+let totalMenit=0;
+tList.forEach(x=>{
+let jam=x.jam_masuk||"07:00";
+let [hh,mm]=jam.split(':').map(Number);
+let menit=(hh*60+mm)-(7*60);
+if(menit<0) menit=0;
+totalMenit+=menit;
+});
 
-  // AUTO ALPA: Untuk setiap hari efektif, kalau siswa gak ada record = Alpa
-  // Cek jam sekarang >16:00 baru hitung alpa hari ini
-  let jamSekarang = new Date().getHours();
-  hariEfektif.forEach(tgl=>{
-    let isToday = tgl == today.toISOString().slice(0,10);
-    if(isToday && jamSekarang < 16) return; // hari ini belum jam 16, jangan alpa kan dulu
-    if(!distinctTanggalDiDB.includes(tgl) && hariEfektif.length>0){
-        // kalau hari itu belum ada absen sama sekali di DB, semua alpa (kecuali sudah ada logic lain)
-    }
-    allSiswa.forEach(s=>{
-        let key = s.nama+"|"+tgl;
-        if(!absByNamaTanggal[key]){
-            map[s.nama].A++;
-        }
-    });
-  });
+tbody.innerHTML+=`<tr><td style="text-align:left">${nama}</td><td>${h}</td><td>${totalMenit}</td><td>${sKit}</td><td>${i}</td><td>${d}</td><td>${a}</td><td>${persen}%</td></tr>`;
 
-  let tbody=document.querySelector('#tbl tbody'); tbody.innerHTML="";
-  Object.values(map).forEach(r=>{
-    let total=r.H+r.T+r.S+r.I+r.D+r.A; let hadir=r.H+r.T; let pct=hariEfektif.length?Math.round((hadir/hariEfektif.length)*100):0;
-    let tr=document.createElement('tr');
-    tr.innerHTML=`<td>${r.nama}</td><td><span class="badge H">${r.H}</span></td><td><span class="badge T">${r.T}</span> <small style="color:#FFA31A">(${r.totalTelat} mnt)</small></td><td>${r.S}</td><td>${r.I}</td><td>${r.D}</td><td><span class="badge A">${r.A}</span></td><td style="color:var(--gold)">${pct}%</td>`;
-    tbody.appendChild(tr);
-  });
-
-  let htmlTelat="";
-  Object.values(map).forEach(r=>{if(r.detail.length>0){htmlTelat+=`<div style="border-bottom:1px solid #222;padding:6px 0"><b style="color:var(--gold)">${r.nama}</b> - Total ${r.totalTelat} menit<br><span style="color:#aaa;font-size:10px">${r.detail.join(', ')}</span></div>`}});
-  document.getElementById('detailTelat').innerHTML=htmlTelat||'<p style="color:#666;text-align:center">Tidak ada yang telat - Mantap!</p>';
-
-  let fotoHtml="";
-  abs.slice(0,40).forEach(a=>{
-    let img = a.foto_url||'';
-    let dok = a.dokumen_url || a.bukti_uri || a.bukti_url || '';
-    if(img || dok) fotoHtml+=`<div style="background:#111;border-radius:10px;overflow:hidden;border:1px solid #222"><img src="${img||dok}" style="width:100%;height:100px;object-fit:cover"><div style="padding:6px;font-size:9px"><b>${a.nama||''}</b><br><span class="badge ${a.keterangan}">${a.keterangan}</span> ${a.telat_menit?a.telat_menit+'mnt':''}<br>${img?`<a href="${img}" target="_blank" style="color:var(--gold)">Selfie</a>`:''} ${dok?` | <a href="${dok}" target="_blank" style="color:#00ff88">Dokumen</a>`:''}</div></div>`;
-  });
-  document.getElementById('fotoList').innerHTML=fotoHtml||'<p style="color:#666">Belum ada foto</p>';
-
- }catch(e){debug.innerText="ERROR: "+e.message}
+if(tList.length>0){
+detailHtml+=`<b>${nama}:</b> `;
+tList.forEach(x=>{detailHtml+=`${x.tanggal} jam ${x.jam_masuk} telat ${x.keterangan||''}, `;});
+detailHtml+="<br>";
+}
+dataS.forEach(x=>{
+if(x.foto_url){
+fotoHtml+=`<div style="background:#111;padding:4px;border-radius:8px"><img src="${x.foto_url}" style="width:100%;border-radius:8px"><small style="font-size:8px">${x.nama} - ${x.tanggal} ${x.status}</small></div>`;
+}
+});
+}
+document.getElementById('detailTelat').innerHTML=detailHtml||"Tidak ada telat bulan ini";
+document.getElementById('fotoList').innerHTML=fotoHtml||"Belum ada foto/dokumen";
+debug.innerText=`Loaded: ${abs.length} data - V8 OK`;
+}catch(e){
+debug.innerText="ERROR: "+e.message;
+console.error(e);
+}
 }
 
 document.getElementById('btnAbsenGuru').onclick=async()=>{
-  const nama=document.getElementById('absenNama').value;
-  const ket=document.getElementById('absenKet').value;
-  const tgl=document.getElementById('absenTgl').value;
-  const file=document.getElementById('dokFile').files[0];
-  if(!nama||!tgl) return alert('Pilih nama & tanggal!');
-  let dokumenUrl=null;
-  if(file){
-    const fileName=`dokumen/${tgl}_${nama}_${ket}_${Date.now()}_${file.name}`;
-    // UPLOAD KE BUCKET BUKTI_TKR PUNYA BOS
-    const {error:upErr}=await supa.storage.from('bukti_tkr').upload(fileName,file);
-    if(upErr) return alert('Upload dokumen gagal: '+upErr.message);
-    const {data:urlData}=supa.storage.from('bukti_tkr').getPublicUrl(fileName);
-    dokumenUrl=urlData.publicUrl;
-  }
-  // Simpan ke 2 kolom biar kompatibel dengan tabel Bos yang ada bukti_uri & dokumen_url
-  const {error}=await supa.from('absensi').insert([{nama:nama,keterangan:ket,tanggal:tgl,telat_menit:0,dokumen_url:dokumenUrl,bukti_uri:dokumenUrl,bukti_url:dokumenUrl,foto_url:dokumenUrl}]);
-  if(error) return alert('Gagal: '+error.message);
-  alert(`Berhasil! ${nama} diabsenkan ${ket} tanggal ${tgl} ${dokumenUrl?'+ Dokumen masuk bukti_tkr':''}`);
-  document.getElementById('dokFile').value='';
-  load();
-};
-</script></body></html>
+let nama=document.getElementById('absenNama').value;
+let status=document.getElementById('absenStatus').value.split(' ')[0];
+let tgl=document.getElementById('absenTgl').value;
+let file=document.getElementById('dokFile').files[0];
+let urlFoto="";
+if(file){
+let fname=`${Date.now()}_${file.name}`;
+let {data,error}=await supa.storage.from('bukti_tkr').upload(fname,file);
+if(error){alert(error.message);return;}
+let {data:pub}=supa.storage.from('bukti_tkr').getPublicUrl(fname);
+urlFoto=pub.publicUrl;
+}
+let {error}=await supa.from('absensi').insert([{nama:nama,status:status,tanggal:tgl,foto_url:urlFoto,jam_masuk:new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})}]);
+if(error) alert(error.message);
+else {alert("Berhasil simpan!"); load();}
+}
+</script>
+</body>
+</html>
