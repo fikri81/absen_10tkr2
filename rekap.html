@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>REKAP V7 - TELAT MENIT + DOKUMEN</title>
+<title>REKAP V8 - FINAL 06-16 + AUTO ALPA</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--gold:#E7C65A;--bg:#0E0E10;--card:#18181C;--card2:#1F1F24}
@@ -17,44 +16,42 @@ h2{font-family:'Orbitron';letter-spacing:2.5px;color:var(--gold);text-align:cent
 table{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px;border-radius:14px;overflow:hidden;border:1px solid rgba(231,198,90,.18)}
 th{background:#232328;color:var(--gold);padding:10px 6px;font-family:'Orbitron';font-size:10.5px;letter-spacing:.6px;border-bottom:1px solid rgba(231,198,90,.25)}
 td{border-bottom:1px solid rgba(255,255,255,.05);padding:9px 6px;background:rgba(0,0,0,.18)}
-td:first-child{color:#EAD98A;font-weight:600;text-align:left;cursor:pointer}
-.badge{padding:2px 7px;border-radius:6px;font-size:10px;font-weight:800}.badge.H{background:#E7C65A;color:#000}.badge.T{background:#FFA31A;color:#000}.badge.S{background:#ffaa00;color:#000}.badge.I{background:#00e5ff;color:#000}.badge.D{background:#a0a0a0;color:#000}
-#gateGuru{position:fixed;inset:0;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;z-index:99;padding:20px}
-.pass-wrap{position:relative;max-width:320px;margin:10px auto}.pass-wrap input{width:100%;padding:12px 45px 12px 14px;border-radius:12px;background:#0a0a0a;border:1px solid rgba(231,198,90,.3);color:#fff;font-weight:600}
-.eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);cursor:pointer;background:#222;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center}
+td:first-child{color:#EAD98A;font-weight:600;text-align:left}
+.badge{padding:2px 7px;border-radius:6px;font-size:10px;font-weight:800}.badge.H{background:#E7C65A;color:#000}.badge.T{background:#FFA31A;color:#000}.badge.S{background:#ffaa00;color:#000}.badge.I{background:#00e5ff;color:#000}.badge.D{background:#a0a0a0;color:#000}.badge.A{background:#ff4444;color:#fff}
 </style></head><body>
 
 <div class="logo-box">
 <img src="./logo-bulat.jpg" style="width:130px;height:130px;border-radius:50%;border:3px solid var(--gold);box-shadow:0 0 20px rgba(231,198,90,.4);object-fit:cover">
-<div style="font-family:Orbitron;color:var(--gold);font-size:9px;letter-spacing:2px;margin-top:6px">FIKRI • AUTOMOTIVE ENGLISH • SMKN WONGSOREJO - V7</div>
+<div style="font-family:Orbitron;color:var(--gold);font-size:9px;letter-spacing:2px;margin-top:6px">FIKRI • AUTOMOTIVE ENGLISH • SMKN WONGSOREJO - V8 FINAL</div>
 </div>
 
-<h2>◉ REKAP V7 • TELAT MENIT • DOKUMEN S/I/D</h2>
+<h2>◉ REKAP V8 • 06:00-16:00 • AUTO ALPA</h2>
 
 <div class="bar">
 <select id="bln" class="sel"><option value="1">JAN</option><option value="2">FEB</option><option value="3">MAR</option><option value="4">APR</option><option value="5">MEI</option><option value="6">JUN</option><option value="7">JUL</option><option value="8">AGS</option><option value="9" selected>SEP</option><option value="10">OKT</option><option value="11">NOV</option><option value="12">DES</option></select>
 <select id="thn" class="sel"><option>2025</option><option selected>2026</option></select>
-<button class="btn" id="loadBtn" onclick="load()">◉ LOAD</button>
+<button class="btn" onclick="load()">◉ LOAD</button>
 <a href="./index.html" class="btn" style="text-decoration:none">← PIT</a>
 </div>
 <div id="debug" style="text-align:center;color:var(--gold);font-size:11px"></div>
 
 <div class="card" style="border-color:#00ff88">
-<h4 style="font-family:Orbitron;color:#00ff88;text-align:center">➕ ABSENKAN S/I/D + UPLOAD DOKUMEN (Opsional)</h4>
+<h4 style="font-family:Orbitron;color:#00ff88;text-align:center">➕ ABSENKAN S/I/D + UPLOAD KE BUKTI_TKR</h4>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
 <select id="absenNama" class="sel"></select>
 <select id="absenKet" class="sel"><option value="S">S - SAKIT</option><option value="I">I - IZIN</option><option value="D">D - DISPENSASI</option><option value="A">A - ALPA</option></select>
 </div>
 <input type="date" id="absenTgl" class="sel" style="width:100%;margin-top:8px">
-<label style="font-size:11px;color:#aaa;margin-top:8px;display:block">📎 Upload Surat Dokter / Izin (Opsional - JPG/PDF):</label>
+<label style="font-size:11px;color:#aaa;margin-top:8px;display:block">📎 Upload Surat (Masuk ke bukti_tkr):</label>
 <input type="file" id="dokFile" accept=".jpg,.jpeg,.png,.pdf" class="sel" style="width:100%;margin-top:4px">
 <button class="btn" id="btnAbsenGuru" style="width:100%;background:linear-gradient(180deg,#00ff88,#00cc66);color:#000;border-color:#00ff88;margin-top:8px">SIMPAN + UPLOAD DOKUMEN</button>
-<small style="color:#666;font-size:10px;display:block;text-align:center;margin-top:4px">File akan disimpan sebagai dokumen_S/I/D bukan foto selfie</small>
 </div>
 
-<div class="card"><table id="tbl"><thead><tr><th>NAMA</th><th>H</th><th>T (Menit)</th><th>S</th><th>I</th><th>D</th><th>A</th><th>%</th></tr></thead><tbody></tbody></table></div>
-<div class="card"><h4 style="font-family:Orbitron;color:var(--gold);text-align:center">DETAIL TELAT HARIAN (WIB)</h4><div id="detailTelat" style="font-size:11px"></div></div>
-<div class="card"><h4 style="font-family:Orbitron;color:var(--gold);text-align:center">FOTO & DOKUMEN</h4><div id="fotoList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px"></div></div>
+<div class="card"><table id="tbl"><thead><tr><th>NAMA</th><th>H</th><th>T (Menit)</th><th>S</th><th>I</th><th>D</th><th>A</th><th>%</th></tr></thead><tbody></tbody></table>
+<small style="color:#666">* A = Otomatis kalau gak absen s/d 16:00. T = hitung dari jam 07:00 (misal masuk jam 10:00 = 180 menit telat)</small>
+</div>
+<div class="card"><h4 style="font-family:Orbitron;color:var(--gold);text-align:center">DETAIL TELAT HARIAN</h4><div id="detailTelat" style="font-size:11px"></div></div>
+<div class="card"><h4 style="font-family:Orbitron;color:var(--gold);text-align:center">FOTO SELFIE + DOKUMEN BUKTI_TKR</h4><div id="fotoList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px"></div></div>
 
 <script>
 const SUPA_URL="https://xozwsdjlifmoywmxdoaj.supabase.co";
@@ -64,55 +61,87 @@ let allSiswa=[];
 
 (async()=>{
   let {data:siswa}=await supa.from('siswa').select('*').order('nama');
-  if(!siswa){
-    let {data:abs}=await supa.from('absensi').select('nama').limit(100);
-    const uniq=[...new Set(abs.map(a=>a.nama))].map((n,i)=>({id:n,nama:n}));
-    siswa=uniq; // fallback kalau tabel siswa belum ada
+  if(!siswa || siswa.length==0){
+    siswa=["MUHAMMAD AMRUL FARUK","MUHAMMAD ARVIN ARGYA PRATAMA","MUHAMMAD DANIELL AMIN","MUHAMMAD FAISAL","MUHAMMAD IBRAHIM AZIZI","MUHAMMAD NAUFAL KIRAM","MUHAMMAD NAZRIEL FURQON","MUHAMMAD ROZAK KUMULLAH","MUHAMMAD SANDI PRATAMA","NIZAM ARJU HEAVENA HASIM","PUTRA ADITIA FIRMANSYAH","PUTRA ARIF OKTAVIANSYAH","RADDY ARDIANSYAH","RAFA ALFANDI DANISA PUTRA","RAFAEL SETYA NUR IMAN","RAMADIAN BARAKA MULYA","RIFKY ADITYA PRATAMA","RIKO ABDILLAH","RINO ADITIA PRATAMA","ROBI ANSA","SAIFUL BAHRI","SELIN FATHIR MAULANA","SEMI MAULANA YAHYA","SULTAN ATSAR WALHADITS","SURYA AJI WICAKSONO","SYAFIQ HIKAM AL BUKHORI","TAUFIQUUR RAHMAN ILHAM","TOLAK RAHMAT","TRIO RADIKA PUTRA","TRISNA ELLIA WIDHI WARDANA","VITO JULIO SAPUTRA","WIL DANUL FARUQ","WISNU AJI SASONGKO","YONGKI FIRMANSYAH","YUSUF AFANDI","ZAINUR ROHIQ FIRDIANO"].map(n=>({nama:n}));
   }
-  allSiswa=siswa||[];
+  allSiswa=siswa;
   const selAbsen=document.getElementById('absenNama');
-  allSiswa.forEach(s=>{let o=document.createElement('option');o.value=s.nama||s.id;o.innerText=s.nama;selAbsen.appendChild(o);});
+  allSiswa.forEach(s=>{let o=document.createElement('option');o.value=s.nama;o.innerText=s.nama;selAbsen.appendChild(o);});
   document.getElementById('absenTgl').value=new Date().toISOString().slice(0,10);
   load();
 })();
 
 async function load(){
  const bln=parseInt(document.getElementById('bln').value); const thn=parseInt(document.getElementById('thn').value); const debug=document.getElementById('debug');
- debug.innerText="▸ Loading V7...";
+ debug.innerText="▸ Loading V8...";
  try{
-  let {data:absAll}=await supa.from('absensi').select('*').limit(1000);
-  let abs=absAll.filter(a=>{let t=a.tanggal||a.waktu||""; if(!t) return true; let d=new Date(t); if(isNaN(d)) return true; return (d.getMonth()+1)==bln && d.getFullYear()==thn;});
-  if(abs.length==0 && absAll.length>0) abs=absAll;
-  debug.innerText=`● ${abs.length} records • V7 TELAT MENIT`;
+  let {data:absAll}=await supa.from('absensi').select('*').limit(2000);
+  let abs=absAll.filter(a=>{let t=a.tanggal||""; if(!t) return false; let d=new Date(t); return (d.getMonth()+1)==bln && d.getFullYear()==thn;});
+
+  debug.innerText=`● ${abs.length} records bulan ini • 06:00-16:00 • Auto Alpa aktif`;
+
+  // Hitung tanggal efektif (hari yang sudah lewat s/d hari ini kalau bulan ini)
+  let hariEfektif = [];
+  let today = new Date(); let isBulanIni = (today.getMonth()+1)==bln && today.getFullYear()==thn;
+  let jumlahHari = new Date(thn, bln, 0).getDate();
+  for(let i=1;i<=jumlahHari;i++){
+    let d = new Date(thn, bln-1, i);
+    if(d > today) continue; // masa depan jangan dihitung Alpa
+    if(d.getDay()==0) continue; // skip Minggu kalau 5 hari kerja (Senin-Sabtu? kalau 5 hari Senin-Jumat, tambah cek 6)
+    hariEfektif.push(d.toISOString().slice(0,10));
+  }
+  let distinctTanggalDiDB = [...new Set(abs.map(a=>a.tanggal))];
 
   let map={};
   allSiswa.forEach(s=>{let nm=s.nama; map[nm]={nama:nm,H:0,T:0,S:0,I:0,D:0,A:0,totalTelat:0,detail:[]}});
+
+  // Hitung yang sudah ada di DB
+  let absByNamaTanggal = {};
   abs.forEach(a=>{
-    let nm=a.nama||a.siswa_id; if(!map[nm]) map[nm]={nama:nm,H:0,T:0,S:0,I:0,D:0,A:0,totalTelat:0,detail:[]};
+    let nm=a.nama; if(!map[nm]) map[nm]={nama:nm,H:0,T:0,S:0,I:0,D:0,A:0,totalTelat:0,detail:[]};
     let ket=(a.keterangan||'H').toUpperCase();
     if(['H','T','S','I','D','A'].includes(ket)) map[nm][ket]++;
-    if(ket=='T' && a.telat_menit) {map[nm].totalTelat+=parseInt(a.telat_menit); map[nm].detail.push(`${a.tanggal||''}: Telat ${a.telat_menit} menit`);}
+    if(ket=='T' && a.telat_menit) {map[nm].totalTelat+=parseInt(a.telat_menit)||0; map[nm].detail.push(`${a.tanggal}: Telat ${a.telat_menit} menit`);}
+    let key = nm+"|"+a.tanggal;
+    absByNamaTanggal[key]=true;
+  });
+
+  // AUTO ALPA: Untuk setiap hari efektif, kalau siswa gak ada record = Alpa
+  // Cek jam sekarang >16:00 baru hitung alpa hari ini
+  let jamSekarang = new Date().getHours();
+  hariEfektif.forEach(tgl=>{
+    let isToday = tgl == today.toISOString().slice(0,10);
+    if(isToday && jamSekarang < 16) return; // hari ini belum jam 16, jangan alpa kan dulu
+    if(!distinctTanggalDiDB.includes(tgl) && hariEfektif.length>0){
+        // kalau hari itu belum ada absen sama sekali di DB, semua alpa (kecuali sudah ada logic lain)
+    }
+    allSiswa.forEach(s=>{
+        let key = s.nama+"|"+tgl;
+        if(!absByNamaTanggal[key]){
+            map[s.nama].A++;
+        }
+    });
   });
 
   let tbody=document.querySelector('#tbl tbody'); tbody.innerHTML="";
   Object.values(map).forEach(r=>{
-    let total=r.H+r.T+r.S+r.I+r.D+r.A; let pct=total?Math.round(((r.H+r.T)/20)*100):0;
+    let total=r.H+r.T+r.S+r.I+r.D+r.A; let hadir=r.H+r.T; let pct=hariEfektif.length?Math.round((hadir/hariEfektif.length)*100):0;
     let tr=document.createElement('tr');
-    tr.innerHTML=`<td>${r.nama}</td><td>${r.H}</td><td>${r.T} <small style="color:#FFA31A">(${r.totalTelat} mnt)</small></td><td>${r.S}</td><td>${r.I}</td><td>${r.D}</td><td>${r.A}</td><td style="color:var(--gold)">${pct}%</td>`;
+    tr.innerHTML=`<td>${r.nama}</td><td><span class="badge H">${r.H}</span></td><td><span class="badge T">${r.T}</span> <small style="color:#FFA31A">(${r.totalTelat} mnt)</small></td><td>${r.S}</td><td>${r.I}</td><td>${r.D}</td><td><span class="badge A">${r.A}</span></td><td style="color:var(--gold)">${pct}%</td>`;
     tbody.appendChild(tr);
   });
 
-  // Detail telat
   let htmlTelat="";
-  Object.values(map).forEach(r=>{if(r.detail.length>0){htmlTelat+=`<div style="border-bottom:1px solid #222;padding:6px 0"><b style="color:var(--gold)">${r.nama}</b> - Total telat ${r.totalTelat} menit<br><span style="color:#aaa;font-size:10px">${r.detail.join(', ')}</span></div>`}});
-  document.getElementById('detailTelat').innerHTML=htmlTelat||'<p style="color:#666;text-align:center">Tidak ada yang telat bulan ini - Mantap!</p>';
+  Object.values(map).forEach(r=>{if(r.detail.length>0){htmlTelat+=`<div style="border-bottom:1px solid #222;padding:6px 0"><b style="color:var(--gold)">${r.nama}</b> - Total ${r.totalTelat} menit<br><span style="color:#aaa;font-size:10px">${r.detail.join(', ')}</span></div>`}});
+  document.getElementById('detailTelat').innerHTML=htmlTelat||'<p style="color:#666;text-align:center">Tidak ada yang telat - Mantap!</p>';
 
-  // Foto & Dokumen
   let fotoHtml="";
-  abs.slice(0,30).forEach(a=>{
-    if(a.foto_url) fotoHtml+=`<div style="background:#111;border-radius:10px;overflow:hidden;border:1px solid #222"><img src="${a.foto_url}" style="width:100%;height:100px;object-fit:cover"><div style="padding:6px;font-size:9px"><b>${a.nama||''}</b><br>${a.keterangan||''} ${a.telat_menit?'- '+a.telat_menit+'mnt telat':''}<br><a href="${a.foto_url}" target="_blank" style="color:var(--gold)">Lihat</a>${a.dokumen_url?` | <a href="${a.dokumen_url}" target="_blank" style="color:#00ff88">Dokumen</a>`:''}</div></div>`;
+  abs.slice(0,40).forEach(a=>{
+    let img = a.foto_url||'';
+    let dok = a.dokumen_url || a.bukti_uri || a.bukti_url || '';
+    if(img || dok) fotoHtml+=`<div style="background:#111;border-radius:10px;overflow:hidden;border:1px solid #222"><img src="${img||dok}" style="width:100%;height:100px;object-fit:cover"><div style="padding:6px;font-size:9px"><b>${a.nama||''}</b><br><span class="badge ${a.keterangan}">${a.keterangan}</span> ${a.telat_menit?a.telat_menit+'mnt':''}<br>${img?`<a href="${img}" target="_blank" style="color:var(--gold)">Selfie</a>`:''} ${dok?` | <a href="${dok}" target="_blank" style="color:#00ff88">Dokumen</a>`:''}</div></div>`;
   });
-  document.getElementById('fotoList').innerHTML=fotoHtml;
+  document.getElementById('fotoList').innerHTML=fotoHtml||'<p style="color:#666">Belum ada foto</p>';
 
  }catch(e){debug.innerText="ERROR: "+e.message}
 }
@@ -126,14 +155,16 @@ document.getElementById('btnAbsenGuru').onclick=async()=>{
   let dokumenUrl=null;
   if(file){
     const fileName=`dokumen/${tgl}_${nama}_${ket}_${Date.now()}_${file.name}`;
-    const {error:upErr}=await supa.storage.from('selfie_tkr').upload(fileName,file);
+    // UPLOAD KE BUCKET BUKTI_TKR PUNYA BOS
+    const {error:upErr}=await supa.storage.from('bukti_tkr').upload(fileName,file);
     if(upErr) return alert('Upload dokumen gagal: '+upErr.message);
-    const {data:urlData}=supa.storage.from('selfie_tkr').getPublicUrl(fileName);
+    const {data:urlData}=supa.storage.from('bukti_tkr').getPublicUrl(fileName);
     dokumenUrl=urlData.publicUrl;
   }
-  const {error}=await supa.from('absensi').insert([{nama:nama,keterangan:ket,tanggal:tgl,telat_menit:0,dokumen_url:dokumenUrl}]);
+  // Simpan ke 2 kolom biar kompatibel dengan tabel Bos yang ada bukti_uri & dokumen_url
+  const {error}=await supa.from('absensi').insert([{nama:nama,keterangan:ket,tanggal:tgl,telat_menit:0,dokumen_url:dokumenUrl,bukti_uri:dokumenUrl,bukti_url:dokumenUrl,foto_url:dokumenUrl}]);
   if(error) return alert('Gagal: '+error.message);
-  alert(`Berhasil! ${nama} diabsenkan ${ket} tanggal ${tgl} ${dokumenUrl?'+ Dokumen terupload':''}`);
+  alert(`Berhasil! ${nama} diabsenkan ${ket} tanggal ${tgl} ${dokumenUrl?'+ Dokumen masuk bukti_tkr':''}`);
   document.getElementById('dokFile').value='';
   load();
 };
