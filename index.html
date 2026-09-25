@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="id"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>10 TKR 2 - PIT STOP V6 FINAL</title>
+<title>10 TKR 2 - V7 TELAT MENIT</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Inter:wght@800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9/dist/leaflet.css"><script src="https://unpkg.com/leaflet@1.9/dist/leaflet.js"></script>
@@ -22,60 +22,82 @@
 #popup{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:99;padding:20px}
 </style></head><body>
 
-<!-- GATE PASSWORD KELAS -->
 <div id="gate"><div class="card" style="max-width:340px;text-align:center">
-<img src="./logo-bulat.jpg" style="width:90px;height:90px;border-radius:50%;border:3px solid var(--gold);box-shadow:0 0 20px rgba(231,198,90,.4);object-fit:cover;margin-bottom:10px">
+<img src="./logo-bulat.jpg" style="width:130px;height:130px;border-radius:50%;border:3px solid var(--gold);box-shadow:0 0 20px rgba(231,198,90,.4);object-fit:cover;margin-bottom:10px">
 <h2 style="font-family:Orbitron;color:var(--gold);margin:6px 0">PIT STOP 10 TKR 2</h2>
 <p style="color:#666;font-size:11px">Masukkan Password Kelas dulu Bos!</p>
 <div class="pass-wrap"><input type="password" id="passKelas" placeholder="Password Kelas" value="" autocomplete="new-password"><div class="eye" id="eyeKelas">👁️</div></div>
 <button class="gold" id="btnMasuk">GAS MASUK 🏁</button>
-<small style="color:#555">Password: tkr2jaya</small>
+<small style="color:#555">Password: tkr2jaya | Absen 05:30-07:00 WIB</small>
 </div></div>
 
-<!-- LOGO HEADER -->
 <div class="logo-box">
 <img src="./logo-bulat.jpg" alt="FIKRI Automotive English" style="width:130px;height:130px;border-radius:50%;border:3px solid var(--gold);box-shadow:0 0 25px rgba(231,198,90,.5);object-fit:cover">
 <div style="font-family:Orbitron;font-size:10px;color:var(--gold);letter-spacing:2.5px;margin-top:8px;font-weight:700">FIKRI • AUTOMOTIVE ENGLISH • SMKN WONGSOREJO</div>
 </div>
 
-<div class="header"><div style="font-family:Orbitron;font-size:18px">10 TKR 2 <span style="background:var(--orange);color:#000;padding:2px 8px;border-radius:6px">PIT STOP</span></div><div id="clock" style="font-size:10px;color:#888;letter-spacing:2px;font-family:Orbitron"></div></div>
+<div class="header"><div style="font-family:Orbitron;font-size:18px">10 TKR 2 <span style="background:var(--orange);color:#000;padding:2px 8px;border-radius:6px">PIT STOP V7</span></div><div id="clock" style="font-size:10px;color:#888;letter-spacing:2px;font-family:Orbitron"></div><div id="jamInfo" style="font-size:10px;color:var(--gold);margin-top:4px"></div></div>
 
 <div class="box"><div class="card">
-<div style="display:flex;justify-content:space-between"><b>LOBBY 36 PEMBALAP - HADIR ONLY</b><small id="gpsText" style="color:var(--orange)">GPS...</small></div>
-<div id="accText" style="font-size:10px;color:#666">Radius 500m - Siswa hanya bisa HADIR</div>
+<div style="display:flex;justify-content:space-between"><b>LOBBY 36 PEMBALAP</b><small id="gpsText" style="color:var(--orange)">GPS...</small></div>
+<div id="accText" style="font-size:10px;color:#666">Radius 500m - Absen 05:30-07:00 WIB = H, Lewat = T</div>
 <div id="lobby" class="lobby"></div>
 
 <div id="panel" style="display:none;margin-top:14px;border-top:1px solid #222;padding-top:12px">
 <div id="selName" style="text-align:center;color:var(--orange)"></div>
-<div style="background:#1a1a0a;border:1px solid #333;padding:8px;border-radius:8px;text-align:center;margin:6px 0;font-size:11px;color:var(--gold)">✅ MODE HADIR DI KELAS - Selfie + GPS 500m</div>
+<div id="statusJam" style="background:#1a1a0a;border:1px solid #333;padding:8px;border-radius:8px;text-align:center;margin:6px 0;font-size:11px;color:var(--gold)"></div>
 <video id="video" autoplay playsinline muted></video><canvas id="canvas" style="display:none"></canvas>
 <div id="map"></div>
-<button class="gold" id="btnAbsen">📸 TAP ABSEN HADIR - SELFIE + GPS</button>
+<button class="gold" id="btnAbsen">📸 TAP ABSEN - SELFIE + GPS</button>
 <div id="status" style="text-align:center;font-size:11px;color:#666"></div>
-<small style="color:#555;font-size:9px;display:block;text-align:center;margin-top:6px">Sakit/Izin/Dispensasi diisi Wali Kelas di halaman Rekap</small>
 </div></div>
-<a href="rekap.html" style="display:block;text-align:center;margin-top:12px;color:var(--orange);text-decoration:none;border:1px solid #333;padding:8px;border-radius:20px">📊 REKAP GURU (S/I/D)</a></div>
+<a href="rekap.html" style="display:block;text-align:center;margin-top:12px;color:var(--orange);text-decoration:none;border:1px solid #333;padding:8px;border-radius:20px">📊 REKAP GURU (S/I/D + Telat Menit)</a></div>
 
 <div id="popup"><div class="card" style="max-width:340px;text-align:center"><div style="font-size:56px" id="popIcon">🏆</div><h2 id="popTitle" style="font-family:Orbitron;color:var(--orange)">VICTORY</h2><p id="popMsg" style="color:#aaa;font-size:13px"></p><button class="gold" onclick="document.getElementById('popup').style.display='none'">OKE BOSQUE</button></div></div>
 
 <script>
 const PASS_KELAS="tkr2jaya";
 const SUPABASE_URL="https://xozwsdjlifmoywmxdoaj.supabase.co";const SUPABASE_ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhvenZzZGpsaWZtb3l3bXhkb2FqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc3MTEzNjgsImV4cCI6MjA3MzI4NzM2OH0.EkK2-9WkaC2u1oMTSR_C2v24a-LfR1pLEqRStJwRwR4";const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
-const SEKOLAH={lat:-7.9891,lng:114.3952};const RADIUS=500; // 500 METER BOOOSS
+const SEKOLAH={lat:-7.9891,lng:114.3952};const RADIUS=500;
 const SISWA=["MUHAMMAD AMRUL FARUK","MUHAMMAD ARVIN ARGYA PRATAMA","MUHAMMAD DANIELL AMIN","MUHAMMAD FAISAL","MUHAMMAD IBRAHIM AZIZI","MUHAMMAD NAUFAL KIRAM","MUHAMMAD NAZRIEL FURQON","MUHAMMAD ROZAK KUMULLAH","MUHAMMAD SANDI PRATAMA","NIZAM ARJU HEAVENA HASIM","PUTRA ADITIA FIRMANSYAH","PUTRA ARIF OKTAVIANSYAH","RADDY ARDIANSYAH","RAFA ALFANDI DANISA PUTRA","RAFAEL SETYA NUR IMAN","RAMADIAN BARAKA MULYA","RIFKY ADITYA PRATAMA","RIKO ABDILLAH","RINO ADITIA PRATAMA","ROBI ANSA","SAIFUL BAHRI","SELIN FATHIR MAULANA","SEMI MAULANA YAHYA","SULTAN ATSAR WALHADITS","SURYA AJI WICAKSONO","SYAFIQ HIKAM AL BUKHORI","TAUFIQUUR RAHMAN ILHAM","TOLAK RAHMAT","TRIO RADIKA PUTRA","TRISNA ELLIA WIDHI WARDANA","VITO JULIO SAPUTRA","WIL DANUL FARUQ","WISNU AJI SASONGKO","YONGKI FIRMANSYAH","YUSUF AFANDI","ZAINUR ROHIQ FIRDIANO"];
 let curPos=null,curAcc=9999,selected=null;const today=new Date().toISOString().slice(0,10);
 function showPop(i,t,m){document.getElementById('popIcon').innerText=i;document.getElementById('popTitle').innerText=t;document.getElementById('popMsg').innerText=m;document.getElementById('popup').style.display='flex';}
 const pk=document.getElementById('passKelas'); pk.value=''; const ek=document.getElementById('eyeKelas');
 ek.onclick=()=>{if(pk.type==='password'){pk.type='text';ek.innerText='🙈';}else{pk.type='password';ek.innerText='👁️';}};
-document.getElementById('btnMasuk').onclick=()=>{let p=pk.value.trim(); if(p!==PASS_KELAS) return showPop('🔒','PASSWORD SALAH','Yang benar: tkr2jaya (kecil semua, tanpa spasi)'); document.getElementById('gate').style.display='none'; initGPS(); render();};
-function render(){const lobby=document.getElementById('lobby');lobby.innerHTML='';SISWA.forEach((n,idx)=>{const done=localStorage.getItem(`absen_${today}_${n}`);const b=document.createElement('button');b.className='btns'+(done?' done':'');b.innerHTML=done?`${idx+1}. ${n}<br><span style="color:var(--orange);font-size:9px">DONE ${done}</span>`: `${idx+1}. ${n}`;b.onclick=()=>{if(done){showPop('⛔','SUDAH TEREKAM',`${n} jam ${done} hari ini. Lock 1x sehari!`);return;}document.querySelectorAll('.btns').forEach(x=>x.classList.remove('active'));b.classList.add('active');selected=n;document.getElementById('selName').innerText=(idx+1)+'. '+n;document.getElementById('panel').style.display='block';startCam();};lobby.appendChild(b);});}
+document.getElementById('btnMasuk').onclick=()=>{let p=pk.value.trim(); if(p!==PASS_KELAS) return showPop('🔒','PASSWORD SALAH','Yang benar: tkr2jaya'); document.getElementById('gate').style.display='none'; initGPS(); render();};
+
+function getStatusJam(){
+  const now=new Date();
+  const jam=now.getHours(); const menit=now.getMinutes(); const totalMenit=jam*60+menit;
+  const buka=5*60+30; const tutup=7*60; // 05:30 - 07:00
+  if(totalMenit < buka) return {boleh:false, status:'BELUM BUKA', telat:0, msg:`Belum jam absen Bos! Baru ${jam.toString().padStart(2,'0')}:${menit.toString().padStart(2,'0')} WIB. Buka jam 05:30 WIB`};
+  if(totalMenit <= tutup) return {boleh:true, status:'H', telat:0, msg:`✅ ON TIME ${jam.toString().padStart(2,'0')}:${menit.toString().padStart(2,'0')} WIB - Hadir`};
+  let telatMenit = totalMenit - tutup;
+  return {boleh:true, status:'T', telat:telatMenit, msg:`⚠️ TELAT ${telatMenit} MENIT! Jam ${jam.toString().padStart(2,'0')}:${menit.toString().padStart(2,'0')} WIB (Batas 07:00)`};
+}
+
+function render(){const lobby=document.getElementById('lobby');lobby.innerHTML='';SISWA.forEach((n,idx)=>{const done=localStorage.getItem(`absen_${today}_${n}`);const b=document.createElement('button');b.className='btns'+(done?' done':'');b.innerHTML=done?`${idx+1}. ${n}<br><span style="color:var(--orange);font-size:9px">DONE ${done}</span>`: `${idx+1}. ${n}`;b.onclick=()=>{if(done){showPop('⛔','SUDAH TEREKAM',`${n} jam ${done} hari ini. Lock 1x sehari!`);return;}document.querySelectorAll('.btns').forEach(x=>x.classList.remove('active'));b.classList.add('active');selected=n;document.getElementById('selName').innerText=(idx+1)+'. '+n;const st=getStatusJam();document.getElementById('statusJam').innerText=st.msg;document.getElementById('statusJam').style.color=st.status=='H'?'#00ff88':st.status=='T'?'#ffaa00':'#ff0044';document.getElementById('panel').style.display='block';startCam();};lobby.appendChild(b);});}
 function hitungJarak(a,b,c,d){const R=6371e3;const rad=x=>x*Math.PI/180;const dLat=rad(c-a),dLng=rad(d-b);const s=Math.sin(dLat/2)**2+Math.cos(rad(a))*Math.cos(rad(c))*Math.sin(dLng/2)**2;return 2*R*Math.asin(Math.sqrt(s));}
 function initGPS(){const map=L.map('map').setView([SEKOLAH.lat,SEKOLAH.lng],15);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);L.circle([SEKOLAH.lat,SEKOLAH.lng],{radius:RADIUS,color:'#FFA31A',fillOpacity:.12}).addTo(map);L.marker([SEKOLAH.lat,SEKOLAH.lng]).addTo(map).bindPopup('SMKN WONGSOREJO - 500m');if(!navigator.geolocation)return;navigator.geolocation.watchPosition(p=>{curPos=p;curAcc=p.coords.accuracy;const dist=hitungJarak(p.coords.latitude,p.coords.longitude,SEKOLAH.lat,SEKOLAH.lng);document.getElementById('gpsText').innerText=`${Math.round(curAcc)}m | ${Math.round(dist)}m ${dist<=RADIUS?'✅':'❌'}`;document.getElementById('accText').innerText=curAcc<=80?'🟢 Akurasi OK - Bisa Absen':curAcc<=150?'🟡 Akurasi Lumayan - Masih bisa (500m)':'🔴 Akurasi rendah - ke area terbuka';},e=>{}, {enableHighAccuracy:true,maximumAge:0,timeout:20000});}
 async function startCam(){try{const s=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'}});document.getElementById('video').srcObject=s;}catch(e){}}
 document.getElementById('btnAbsen').onclick=async()=>{
+const stJam=getStatusJam();
+if(!stJam.boleh) return showPop('⏰','BELUM BUKA',stJam.msg);
 if(!selected)return showPop('⚠️','PILIH NAMA','Tap nama dulu!');if(!curPos)return showPop('📡','GPS BELUM SIAP','Tunggu GPS!');if(curAcc>150)return showPop('🎯','AKURASI RENDAH',`${Math.round(curAcc)}m terlalu rendah! Max 150m diizinkan. Ke jendela Bos!`);
 const dist=hitungJarak(curPos.coords.latitude,curPos.coords.longitude,SEKOLAH.lat,SEKOLAH.lng);if(dist>RADIUS)return showPop('📍','DILUAR SIRKUIT',`${Math.round(dist)}m dari sekolah! Radius sekarang 500m Bos, mendekat dikit!`);
-if(localStorage.getItem(`absen_${today}_${selected}`))return showPop('✅','SUDAH TEREKAM','Sudah absen hari ini!');const {data:cek}=await sb.from('absensi').select('id').eq('tanggal',today).eq('nama',selected).limit(1);if(cek&&cek.length>0){const jam=new Date().toLocaleTimeString('id-ID');localStorage.setItem(`absen_${today}_${selected}`,jam);return showPop('✅','SUDAH DI SERVER','Sudah masuk server!');}
-document.getElementById('btnAbsen').disabled=true;document.getElementById('status').innerText='⏳ Uploading...';try{const video=document.getElementById('video');const canvas=document.getElementById('canvas');canvas.width=video.videoWidth;canvas.height=video.videoHeight;canvas.getContext('2d').drawImage(video,0,0);const blob=await new Promise(r=>canvas.toBlob(r,'image/jpeg',0.7));const fileName=`${today}/${selected}_${Date.now()}.jpg`;await sb.storage.from('selfie_tkr').upload(fileName,blob);const {data:urlData}=sb.storage.from('selfie_tkr').getPublicUrl(fileName);await sb.from('absensi').insert([{tanggal:today,nama:selected,keterangan:'H',lat:curPos.coords.latitude,lng:curPos.coords.longitude,accuracy:Math.round(curAcc),foto_url:urlData.publicUrl}]);const jam=new Date().toLocaleTimeString('id-ID');localStorage.setItem(`absen_${today}_${selected}`,jam);showPop('🏆','HADIR GASPOL!',' '+selected+' jam '+jam+' | '+Math.round(curAcc)+'m | 500m OK');render();}catch(err){showPop('❌','GAGAL',err.message);}document.getElementById('btnAbsen').disabled=false;document.getElementById('status').innerText='';};
-setInterval(()=>{document.getElementById('clock').innerText=new Date().toLocaleTimeString('id-ID',{hour12:false})+' WIB';},1000);
+if(localStorage.getItem(`absen_${today}_${selected}`))return showPop('✅','SUDAH TEREKAM','Sudah absen hari ini!');
+const {data:cek}=await sb.from('absensi').select('id').eq('tanggal',today).eq('nama',selected).limit(1);if(cek&&cek.length>0){const jam=new Date().toLocaleTimeString('id-ID');localStorage.setItem(`absen_${today}_${selected}`,jam);return showPop('✅','SUDAH DI SERVER','Sudah masuk server!');}
+document.getElementById('btnAbsen').disabled=true;document.getElementById('status').innerText='⏳ Uploading...';
+try{
+const video=document.getElementById('video');const canvas=document.getElementById('canvas');canvas.width=video.videoWidth;canvas.height=video.videoHeight;canvas.getContext('2d').drawImage(video,0,0);const blob=await new Promise(r=>canvas.toBlob(r,'image/jpeg',0.7));
+const fileName=`${today}/${selected}_${Date.now()}.jpg`;await sb.storage.from('selfie_tkr').upload(fileName,blob);const {data:urlData}=sb.storage.from('selfie_tkr').getPublicUrl(fileName);
+await sb.from('absensi').insert([{tanggal:today,nama:selected,keterangan:stJam.status,telat_menit:stJam.telat,lat:curPos.coords.latitude,lng:curPos.coords.longitude,accuracy:Math.round(curAcc),foto_url:urlData.publicUrl}]);
+const jam=new Date().toLocaleTimeString('id-ID');localStorage.setItem(`absen_${today}_${selected}`,jam);
+if(stJam.status=='H'){showPop('🏆','KAMU HADIR ON TIME!',`${selected} jam ${jam} WIB | ON TIME | ${Math.round(curAcc)}m | 500m OK`);}
+else{showPop('⏰',`KAMU TELAT ${stJam.telat} MENIT!`,`${selected} jam ${jam} WIB\nTelat ${stJam.telat} menit dari batas 07:00 WIB\nTetap tercatat sebagai T (Telat)`);}
+render();
+}catch(err){showPop('❌','GAGAL',err.message);}
+document.getElementById('btnAbsen').disabled=false;document.getElementById('status').innerText='';
+};
+setInterval(()=>{const n=new Date();document.getElementById('clock').innerText=n.toLocaleTimeString('id-ID',{hour12:false})+' WIB'; const st=getStatusJam(); document.getElementById('jamInfo').innerText=st.msg;},1000);
 </script></body></html>
