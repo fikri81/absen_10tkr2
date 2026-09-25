@@ -6,76 +6,74 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
-:root{--gold:#E7C65A;--bg:#0E0E10;--card:#18181C;--card2:#1F1F24;--orange:#FFA31A}
+:root{--gold:#E7C65A;--bg:#0E0E10;--card:#18181C;--card2:#1F1F24}
 body{background:radial-gradient(900px at 50% -20%,#25252A 0%,var(--bg) 65%);color:#EAEAEA;font-family:'Inter',system-ui;margin:0;padding:16px}
-h2{font-family:'Orbitron';letter-spacing:2.5px;color:var(--gold);text-shadow:0 0 14px rgba(231,198,90,.35);text-align:center}
+.logo-box{text-align:center;padding:12px 0 8px 0}
+h2{font-family:'Orbitron';letter-spacing:2.5px;color:var(--gold);text-shadow:0 0 14px rgba(231,198,90,.35);text-align:center;margin:8px 0}
 .bar{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:14px auto;max-width:920px}
-.sel{appearance:none;background:var(--card);border:1px solid rgba(231,198,90,.3);color:#fff;padding:11px 14px;border-radius:12px;min-width:140px;font-weight:600;transition:.25s}
-.sel:focus{border-color:var(--gold);box-shadow:0 0 0 2px rgba(231,198,90,.2),0 0 20px rgba(255,215,0,.3)}
-.btn{font-family:'Orbitron';background:linear-gradient(180deg,#2A2A2E,#17171A);border:1px solid var(--gold);color:var(--gold);padding:11px 20px;border-radius:12px;font-weight:700;letter-spacing:.8px;cursor:pointer;transition:.25s;position:relative;overflow:hidden}
-.btn:hover{box-shadow:0 0 0 2px rgba(231,198,90,.2),0 0 26px rgba(255,215,0,.45);transform:translateY(-1px)}
-.btn:active{transform:scale(.96);box-shadow:0 0 30px rgba(255,215,0,.9) inset}
-.card{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid rgba(231,198,90,.18);border-radius:20px;padding:16px;margin:14px auto;max-width:920px;box-shadow:0 10px 30px rgba(0,0,0,.5);transition:.25s}
-.card:hover{border-color:var(--gold);box-shadow:0 0 0 1px rgba(231,198,90,.25),0 0 30px rgba(255,215,0,.15)}
+.sel{appearance:none;background:var(--card);border:1px solid rgba(231,198,90,.3);color:#fff;padding:11px 14px;border-radius:12px;min-width:140px;font-weight:600}
+.btn{font-family:'Orbitron';background:linear-gradient(180deg,#2A2A2E,#17171A);border:1px solid var(--gold);color:var(--gold);padding:11px 20px;border-radius:12px;font-weight:700;letter-spacing:.8px;cursor:pointer}
+.card{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid rgba(231,198,90,.18);border-radius:20px;padding:16px;margin:14px auto;max-width:920px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
 table{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px;border-radius:14px;overflow:hidden;border:1px solid rgba(231,198,90,.18)}
 th{background:#232328;color:var(--gold);padding:10px 6px;font-family:'Orbitron';font-size:10.5px;letter-spacing:.6px;border-bottom:1px solid rgba(231,198,90,.25)}
 td{border-bottom:1px solid rgba(255,255,255,.05);padding:9px 6px;background:rgba(0,0,0,.18)}
-tr:hover td{background:rgba(231,198,90,.07);box-shadow:inset 0 0 0 1px rgba(231,198,90,.15)}
+tr:hover td{background:rgba(231,198,90,.07)}
 td:first-child{color:#EAD98A;font-weight:600;text-align:left;cursor:pointer}
-td:first-child:hover{color:#FFD700;text-shadow:0 0 12px rgba(255,215,0,.7)}
 #debug{color:var(--gold);text-align:center;font-size:11px;margin:8px}
-.pulse{animation:pulse.6s} @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,215,0,.7)}70%{box-shadow:0 0 0 14px rgba(255,215,0,0)}100%{box-shadow:0 0 0 0 rgba(255,215,0,0)}}
-/* TAMBAHAN BARU */
 .pass-wrap{position:relative;max-width:320px;margin:10px auto}
-.pass-wrap input{width:100%;padding:12px 45px 12px 14px;border-radius:12px;background:#0a0a0a;border:1px solid rgba(231,198,90,.3);color:#fff;font-family:Inter;font-weight:600}
-.eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);cursor:pointer;background:#222;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;user-select:none}
+.pass-wrap input{width:100%;padding:12px 45px 12px 14px;border-radius:12px;background:#0a0a0a;border:1px solid rgba(231,198,90,.3);color:#fff;font-weight:600}
+.eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);cursor:pointer;background:#222;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center}
 .badge{padding:2px 7px;border-radius:6px;font-size:10px;font-weight:800}
-.badge.H{background:#E7C65A;color:#000}.badge.T{background:#8A7A3A;color:#fff}.badge.S{background:#ffaa00;color:#000}.badge.I{background:#00e5ff;color:#000}.badge.D{background:#a0a0a0;color:#000}.badge.A{background:#ff0044;color:#fff}
+.badge.H{background:#E7C65A;color:#000}.badge.S{background:#ffaa00;color:#000}.badge.I{background:#00e5ff;color:#000}.badge.D{background:#a0a0a0;color:#000}.badge.A{background:#ff0044;color:#fff}
 #gateGuru{position:fixed;inset:0;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;z-index:99;padding:20px}
+.pulse{animation:pulse.6s} @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,215,0,.7)}70%{box-shadow:0 0 0 14px rgba(255,215,0,0)}100%{box-shadow:0 0 0 0 rgba(255,215,0,0)}}
 </style></head><body>
-<h2>◉ REKAP • 10 TKR 2</h2>
 
-<!-- MODE SISWA - CEK PRIBADI (TANPA PASSWORD) -->
+<div class="logo-box">
+<img src="./logo-bulat.jpg" style="width:100px;height:100px;border-radius:50%;border:3px solid var(--gold);box-shadow:0 0 20px rgba(231,198,90,.4);object-fit:cover">
+<div style="font-family:Orbitron;color:var(--gold);font-size:9px;letter-spacing:2px;margin-top:6px">FIKRI • AUTOMOTIVE ENGLISH • SMKN WONGSOREJO</div>
+</div>
+
+<h2>◉ REKAP • 10 TKR 2 • 500M</h2>
+
 <div class="card" id="panelSiswa">
 <h4 style="font-family:Orbitron;color:var(--gold);text-align:center;margin:6px 0">👤 CEK ABSEN PRIBADI</h4>
-<p style="text-align:center;font-size:11px;color:#777;margin:0 0 10px 0">Pilih namamu, lihat history kamu aja. Rekap kelas dikunci guru.</p>
+<p style="text-align:center;font-size:11px;color:#777;margin:0 0 10px 0">Pilih namamu, lihat history kamu aja. Radius 500m. Sakit/Izin diisi guru.</p>
 <select id="myName" class="sel" style="width:100%"></select>
 <button class="btn" id="btnCekSaya" style="width:100%;margin-top:8px">🔍 LIHAT ABSEN SAYA</button>
 <div id="myResult"></div>
-<div style="text-align:center;margin-top:14px"><button onclick="document.getElementById('gateGuru').style.display='flex'" style="background:none;border:1px solid #333;color:#666;padding:8px 14px;border-radius:20px;font-size:11px;cursor:pointer;font-family:Orbitron">🔒 LOGIN GURU - REKAP KESELURUHAN</button></div>
+<div style="text-align:center;margin-top:14px"><button onclick="document.getElementById('gateGuru').style.display='flex'" style="background:none;border:1px solid #333;color:#666;padding:8px 14px;border-radius:20px;font-size:11px;cursor:pointer;font-family:Orbitron">🔒 LOGIN GURU - REKAP & ISI S/I/D</button></div>
 </div>
 
-<!-- GATE GURU - PASSWORD KOSONG + MATA -->
 <div id="gateGuru"><div class="card" style="max-width:360px;width:100%;text-align:center;border-color:var(--gold)">
-<h3 style="font-family:Orbitron;color:var(--gold)">🔒 KHUSUS WALI KELAS</h3>
-<p style="font-size:11px;color:#666">Masukkan password guru untuk buka rekap 1 kelas + absenkan siswa S/I/D</p>
+<img src="./logo-bulat.jpg" style="width:70px;height:70px;border-radius:50%;border:2px solid var(--gold);margin-bottom:8px">
+<h3 style="font-family:Orbitron;color:var(--gold);margin:5px 0">🔒 KHUSUS WALI KELAS</h3>
+<p style="font-size:11px;color:#666">Password guru untuk buka rekap 1 kelas + absenkan S/I/D</p>
 <div class="pass-wrap"><input type="password" id="passGuru" placeholder="Password Guru" value="" autocomplete="new-password"><div class="eye" id="toggleEye">👁️</div></div>
 <button class="btn" id="btnLoginGuru" style="width:100%">BUKA REKAP KELAS 🏆</button>
-<small style="color:#555;font-size:10px">Password kosong saat load, klik mata untuk lihat. Default: tkr2jaya2025</small>
-<div style="margin-top:10px"><button onclick="document.getElementById('gateGuru').style.display='none'" style="background:none;border:0;color:#666;font-size:11px;cursor:pointer">← Kembali ke cek pribadi</button></div>
+<small style="color:#555;font-size:10px">Default: tkr2jaya2025 - ketik kecil semua tanpa spasi</small>
+<div style="margin-top:10px"><button onclick="document.getElementById('gateGuru').style.display='none'" style="background:none;border:0;color:#666;font-size:11px;cursor:pointer">← Kembali</button></div>
 </div></div>
 
-<!-- PANEL GURU - REKAP TOTAL (MUNCUL SETELAH LOGIN) -->
 <div id="panelGuru" style="display:none">
 <div class="bar">
 <select id="bln" class="sel"><option value="1">JAN</option><option value="2">FEB</option><option value="3">MAR</option><option value="4">APR</option><option value="5">MEI</option><option value="6">JUN</option><option value="7">JUL</option><option value="8">AGS</option><option value="9" selected>SEP</option><option value="10">OKT</option><option value="11">NOV</option><option value="12">DES</option></select>
 <select id="thn" class="sel"><option>2025</option><option selected>2026</option></select>
 <button class="btn" id="loadBtn" onclick="load()">◉ LOAD</button>
 <button class="btn" onclick="logoutGuru()" style="border-color:#555;color:#888">LOGOUT</button>
-<a href="/" class="btn" style="text-decoration:none;padding:11px 14px;font-size:12px">← PIT</a>
+<a href="./index.html" class="btn" style="text-decoration:none;padding:11px 14px;font-size:12px">← PIT</a>
 </div>
 <div id="debug"></div>
 
-<!-- FITUR BARU: ADMIN BISA ABSENKAN SISWA S/I/D -->
 <div class="card" style="border-color:#00ff88;box-shadow:0 0 20px rgba(0,255,136,.15)">
-<h4 style="font-family:Orbitron;color:#00ff88;text-align:center;margin:6px 0">➕ ABSENKAN SISWA SAKIT/IZIN - KHUSUS GURU</h4>
+<h4 style="font-family:Orbitron;color:#00ff88;text-align:center;margin:6px 0">➕ ABSENKAN SISWA S/I/D - KHUSUS GURU</h4>
+<p style="font-size:10px;color:#666;text-align:center;margin:0 0 8px 0">Siswa di kelas cuma bisa HADIR. Yang sakit/izin Bos yang isikan disini (500m tidak berlaku)</p>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
 <select id="absenNama" class="sel"></select>
-<select id="absenKet" class="sel"><option value="S">S - SAKIT</option><option value="I">I - IZIN</option><option value="D">D - DISPENSASI</option><option value="A">A - ALPA</option><option value="H">H - HADIR</option></select>
+<select id="absenKet" class="sel"><option value="S">S - SAKIT</option><option value="I">I - IZIN</option><option value="D">D - DISPENSASI</option><option value="A">A - ALPA</option></select>
 </div>
 <input type="date" id="absenTgl" class="sel" style="width:100%;margin-top:8px">
-<button class="btn" id="btnAbsenGuru" style="width:100%;background:linear-gradient(180deg,#00ff88,#00cc66);color:#000;border-color:#00ff88;margin-top:8px">SIMPAN ABSEN S/I/D</button>
-<small style="color:#666;font-size:10px;text-align:center;display:block;margin-top:6px">Fitur ini tanpa selfie & GPS, khusus wali kelas untuk isi anak yang sakit/izin dari rumah</small>
+<button class="btn" id="btnAbsenGuru" style="width:100%;background:linear-gradient(180deg,#00ff88,#00cc66);color:#000;border-color:#00ff88;margin-top:8px">SIMPAN S/I/D</button>
 </div>
 
 <div class="card"><h4 style="font-family:Orbitron;color:var(--gold);text-align:center;letter-spacing:1px;margin:6px 0">TOTAL KELAS BULAN INI</h4><canvas id="c1"></canvas><div id="totalTxt" style="text-align:center;margin-top:8px;font-size:12px;opacity:.75"></div></div>
@@ -87,11 +85,9 @@ td:first-child:hover{color:#FFD700;text-shadow:0 0 12px rgba(255,215,0,.7)}
 const SUPA_URL="https://xozwsdjlifmoywmxdoaj.supabase.co";
 const SUPA_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhvendzZGpsaWZtb3l3bXhkb2FqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxOTg1ODEsImV4cCI6MjEwNTc3NDU4MX0.8dtF7YpVlWGZ3OErpqAkPsBpcBPa0xQBs4NuC9cIPlY";
 const supa=supabase.createClient(SUPA_URL,SUPA_KEY);
-const PASS_GURU="tkr2jaya2025"; // GANTI PASSWORD GURU DISINI BOS
-let chart1,chart2;
-let allSiswa=[];
+const PASS_GURU="tkr2jaya2025";
+let chart1,chart2,allSiswa=[];
 
-// INIT
 (async()=>{
   let {data:siswa}=await supa.from('siswa').select('*').order('nama');
   allSiswa=siswa||[];
@@ -100,11 +96,9 @@ let allSiswa=[];
   document.getElementById('absenTgl').value=new Date().toISOString().slice(0,10);
 })();
 
-// PASSWORD MATA - KOSONG PAKSA
 const passEl=document.getElementById('passGuru'); passEl.value='';
 document.getElementById('toggleEye').onclick=()=>{if(passEl.type==='password'){passEl.type='text';document.getElementById('toggleEye').innerText='🙈';}else{passEl.type='password';document.getElementById('toggleEye').innerText='👁️';}};
 
-// MODE SISWA - CEK PRIBADI
 document.getElementById('btnCekSaya').onclick=async()=>{
   const id=document.getElementById('myName').value;
   const nama=allSiswa.find(x=>x.id==id)?.nama||'';
@@ -115,38 +109,36 @@ document.getElementById('btnCekSaya').onclick=async()=>{
   html+=`</div>`; document.getElementById('myResult').innerHTML=html;
 };
 
-// LOGIN GURU
 document.getElementById('btnLoginGuru').onclick=()=>{
-  if(passEl.value!==PASS_GURU) return alert('Password salah Bos! Default: tkr2jaya2025');
+  let p = passEl.value.trim(); // ANTI SPASI
+  if(p.toLowerCase()!==PASS_GURU) return alert('Password salah!\nYang Bos ketik: "'+p+'"\nYang benar: tkr2jaya2025\nHapus spasi depan/belakang!');
   document.getElementById('gateGuru').style.display='none';
   document.getElementById('panelSiswa').style.display='none';
   document.getElementById('panelGuru').style.display='block';
   load();
 };
-function logoutGuru(){document.getElementById('panelGuru').style.display='none';document.getElementById('panelSiswa').style.display='block';passEl.value='';passEl.type='password';}
+function logoutGuru(){document.getElementById('panelGuru').style.display='none';document.getElementById('panelSiswa').style.display='block';passEl.value='';}
 
-// LOAD REKAP KELAS (KODE ASLI BOS)
 async function load(){
  const bln=parseInt(document.getElementById('bln').value); const thn=parseInt(document.getElementById('thn').value); const debug=document.getElementById('debug'); const btn=document.getElementById('loadBtn');
- btn.classList.add('pulse'); setTimeout(()=>btn.classList.remove('pulse'),700); debug.innerText="▸ Syncing telemetry...";
+ btn.classList.add('pulse'); setTimeout(()=>btn.classList.remove('pulse'),700); debug.innerText="▸ Syncing telemetry 500m...";
  try{
   let {data:siswa}=await supa.from('siswa').select('*').order('nama');
   let {data:absAll}=await supa.from('absensi').select('*').limit(1000);
   let abs=absAll.filter(a=>{let t=a.tanggal||a.waktu||""; if(!t) return true; let d=new Date(t); if(isNaN(d)) return true; return (d.getMonth()+1)==bln && d.getFullYear()==thn;});
   if(abs.length==0 && absAll.length>0) abs=absAll;
-  debug.innerText=`● ${siswa.length} drivers • ${abs.length} records • READY - MODE GURU`;
+  debug.innerText=`● ${siswa.length} drivers • ${abs.length} records • READY - MODE GURU 500m`;
   let map={}; siswa.forEach(s=>{map[s.id]={nama:s.nama,H:0,T:0,S:0,I:0,D:0,A:0}}); abs.forEach(a=>{let m=map[a.siswa_id]; if(!m) return; let st=(a.status||'H').toUpperCase(); if(['H','T','S','I','D','A'].includes(st)) m[st]++;});
   let tbody=document.querySelector('#tbl tbody'); tbody.innerHTML=""; let tot={H:0,T:0,S:0,I:0,D:0,A:0};
   siswa.forEach(s=>{let r=map[s.id]; tot.H+=r.H; tot.T+=r.T; tot.S+=r.S; tot.I+=r.I; tot.D+=r.D; tot.A+=r.A; let pct=Math.round(((r.H+r.T)/20)*100); let tr=document.createElement('tr'); tr.innerHTML=`<td onclick="showGrafik('${s.id}','${r.nama.replace(/'/g,"")}')">${r.nama}</td><td>${r.H}</td><td>${r.T}</td><td>${r.S}</td><td>${r.I}</td><td>${r.D}</td><td>${r.A}</td><td style="color:var(--gold)">${pct}%</td>`; tbody.appendChild(tr);});
-  document.getElementById('totalTxt').innerText=`H:${tot.H} T:${tot.T} S:${tot.S} I:${tot.I} D:${tot.D} A:${tot.A} | Records: ${abs.length}`;
+  document.getElementById('totalTxt').innerText=`H:${tot.H} T:${tot.T} S:${tot.S} I:${tot.I} D:${tot.D} A:${tot.A} | Records: ${abs.length} | Radius siswa 500m`;
   if(chart1) chart1.destroy(); Chart.defaults.color='#999';
-  chart1=new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:['H','T','S','I','D','A'],datasets:[{data:[tot.H,tot.T,tot.S,tot.I,tot.D,tot.A],backgroundColor:['#E7C65A','#8A7A3A','#555','#777','#999','#222'],borderWidth:0}]},options:{plugins:{legend:{position:'bottom',labels:{color:'#aaa',boxWidth:12}}},cutout:'58%'}});
+  chart1=new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:['H','T','S','I','D','A'],datasets:[{data:[tot.H,tot.T,tot.S,tot.I,tot.D,tot.A],backgroundColor:['#E7C65A','#8A7A3A','#ffaa00','#00e5ff','#a0a0a0','#ff0044'],borderWidth:0}]},options:{plugins:{legend:{position:'bottom'}}}});
   window._map=map;
  }catch(e){debug.innerText="ERROR: "+e.message}
 }
-function showGrafik(id,nama){let r=window._map[id]; document.getElementById('gJudul').innerText="◉ "+nama.toUpperCase(); if(chart2) chart2.destroy(); chart2=new Chart(document.getElementById('c2'),{type:'bar',data:{labels:['H','T','S','I','D','A'],datasets:[{label:nama,data:[r.H,r.T,r.S,r.I,r.D,r.A],backgroundColor:['#E7C65A','#8A7A3A','#555','#777','#999','#222']}]},options:{plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(255,255,255,.06)'},ticks:{color:'#888'}},x:{grid:{display:false},ticks:{color:'#888'}}}}}); document.getElementById('c2').closest('.card').classList.add('pulse'); setTimeout(()=>document.getElementById('c2').closest('.card').classList.remove('pulse'),700);}
+function showGrafik(id,nama){let r=window._map[id]; document.getElementById('gJudul').innerText="◉ "+nama.toUpperCase(); if(chart2) chart2.destroy(); chart2=new Chart(document.getElementById('c2'),{type:'bar',data:{labels:['H','T','S','I','D','A'],datasets:[{label:nama,data:[r.H,r.T,r.S,r.I,r.D,r.A],backgroundColor:['#E7C65A','#8A7A3A','#ffaa00','#00e5ff','#a0a0a0','#ff0044']}]},options:{plugins:{legend:{display:false}}}}); document.getElementById('c2').closest('.card').classList.add('pulse'); setTimeout(()=>document.getElementById('c2').closest('.card').classList.remove('pulse'),700);}
 
-// FITUR BARU: GURU ABSENKAN SISWA
 document.getElementById('btnAbsenGuru').onclick=async()=>{
   const sid=document.getElementById('absenNama').value;
   const ket=document.getElementById('absenKet').value;
@@ -155,7 +147,7 @@ document.getElementById('btnAbsenGuru').onclick=async()=>{
   if(!sid||!tgl) return alert('Pilih nama & tanggal!');
   const {error}=await supa.from('absensi').insert([{siswa_id:sid,status:ket,tanggal:tgl,waktu:new Date().toISOString()}]);
   if(error) return alert('Gagal: '+error.message);
-  alert(`Berhasil! ${nama} diabsenkan ${ket} tanggal ${tgl}`);
+  alert(`Berhasil! ${nama} diabsenkan ${ket} tanggal ${tgl} (by Admin - tanpa GPS)`);
   load();
 };
 </script></body></html>
