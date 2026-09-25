@@ -75,9 +75,10 @@ async function load(){
  const bln=parseInt(document.getElementById('bln').value); const thn=parseInt(document.getElementById('thn').value); const debug=document.getElementById('debug');
  debug.innerText="▸ Loading V8...";
  try{
-  let {data:absAll}=await supa.from('absensi').select('*').limit(2000);
-  let abs=absAll.filter(a=>{let t=a.tanggal||""; if(!t) return false; let d=new Date(t); return (d.getMonth()+1)==bln && d.getFullYear()==thn;});
-
+let {data:absAll, error:errAbs} = await supa.from('absensi').select('*').limit(2000);
+if(errAbs) throw new Error(errAbs.message);
+if(!absAll) absAll = [];
+let abs=absAll.filter(a=>{let t=a.tanggal||""; if(!t) return false; let d=new Date(t); if(isNaN(d)) return false; return (d.getMonth()+1)==bln && d.getFullYear()==thn;});
   debug.innerText=`● ${abs.length} records bulan ini • 06:00-16:00 • Auto Alpa aktif`;
 
   // Hitung tanggal efektif (hari yang sudah lewat s/d hari ini kalau bulan ini)
