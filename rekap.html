@@ -57,8 +57,6 @@ td:first-child{color:#EAD98A;font-weight:600;text-align:left}
 const SUPA_URL="https://xozwsdjlifmoywmxdoaj.supabase.co";
 const SUPA_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhvenZzZGpsaWZtb3l3bXhkb2FqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc3MTEzNjgsImV4cCI6MjA3MzI4NzM2OH0.EkK2-9WkaC2u1oMTSR_C2v24a-LfR1pLEqRStJwRwR4";
 const supa=supabase.createClient(SUPA_URL,SUPA_KEY);
-let allSiswa=[];
-
 (async()=>{
   let {data:siswa}=await supa.from('siswa').select('*').order('nama');
   if(!siswa || siswa.length==0){
